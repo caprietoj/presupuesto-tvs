@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos personalizados para la tabla de presupuesto */
+.budget-section h5 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #374151;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.budget-table th,
+.budget-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+}
+
+.budget-table td:first-child {
+    text-align: left;
+}
+
+.budget-table th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #111827;
+}
+
+.budget-table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.budget-table tbody tr:hover {
+    background-color: #f3f4f6;
+}
+
+.number-cell {
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+}
+
+.total-row {
+    background-color: #dbeafe !important;
+    font-weight: bold;
+}
+
+.total-row td {
+    border-top: 2px solid #3b82f6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .budget-table th,
+    .budget-table td {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Modal CSS personalizado */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-overlay.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease-in-out;
+    min-width: 600px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #374151;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.detail-table th,
+.detail-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.detail-table th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #111827;
+    position: sticky;
+    top: 0;
+}
+
+.detail-table td {
+    font-size: 0.875rem;
+}
+
+.detail-table .amount {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+}
+
+/* Celdas clicables */
+.clickable-cell {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clickable-cell:hover {
+    background-color: #dbeafe !important;
+    color: #1d4ed8;
+    transform: scale(1.02);
+}
+
+/* Estilos para saldos positivos y negativos */
+.positive {
+    color: #059669;
+}
+
+.negative {
+    color: #dc2626;
+}
+
+/* Celdas editables */
+.editable {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.editable:hover {
+    background-color: #f0f9ff;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        min-width: 95%;
+        padding: 1rem;
+    }
+    
+    .detail-table th,
+    .detail-table td {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+}
