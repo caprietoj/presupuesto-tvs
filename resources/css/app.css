@@ -1,3 +1,6 @@
+/* Importar estilos de navegación */
+@import './navigation.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -420,17 +420,37 @@ class DashboardController extends Controller
         // Calcular datos específicos para RUBROS INSTITUCIONALES por mes
         $rubrosInstitucionalesPorMes = [];
         
-        // Inicializar estructura por categoría
+        // Inicializar estructura por categoría con presupuestos fijos
+        $presupuestosFijos = [
+            'equipos' => 18060210,
+            'examenes_medicos' => 10520000,
+            'tecnologia_institucional' => 167566399,
+            'insumos_enfermeria' => 5260000,
+            'mercadeo_admisiones' => 78688901,
+            'eventos_comunidad' => 5008698,
+            'mantenimiento_general' => 0, // No se especificó valor
+            'reparaciones_mayores' => 182322120,
+            'reparacion_muebles' => 17200200,
+            'utiles_oficina' => 34400400,
+            'elementos_aseo' => 60000000,
+            'dotacion_trabajo' => 27352000,
+            'gastos_agasajos' => 45867200,
+            'bienestar_institucional' => 22933600,
+            'eventos_internos' => 0, // No se especificó valor
+            'gastos_contratacion' => 5733400,
+            'afiliaciones_inscripciones' => 68617032
+        ];
+        
         $categorias = [
             'equipos', 'examenes_medicos', 'tecnologia_institucional', 'insumos_enfermeria',
             'mercadeo_admisiones', 'eventos_comunidad', 'mantenimiento_general', 'reparaciones_mayores',
-            'reparacion_muebles', 'utiles_oficina', 'elementos_aseo', 'gastos_agasajos',
+            'reparacion_muebles', 'utiles_oficina', 'elementos_aseo', 'dotacion_trabajo', 'gastos_agasajos',
             'bienestar_institucional', 'eventos_internos', 'gastos_contratacion', 'afiliaciones_inscripciones'
         ];
         
         foreach ($categorias as $categoria) {
             $rubrosInstitucionalesPorMes[$categoria] = [
-                'presupuesto' => 0,
+                'presupuesto' => $presupuestosFijos[$categoria],
                 'junio' => 0,
                 'julio' => 0,
                 'agosto' => 0,
@@ -484,6 +504,9 @@ class DashboardController extends Controller
             // Elementos de Aseo y Cafeteria: 11011001 - 11011002
             $rubrosInstitucionalesPorMes['elementos_aseo'][$mesNombre] = $calcularRubro(['11011001', '11011002']);
             
+            // Dotación de Trabajo: (código por definir - temporalmente vacío)
+            $rubrosInstitucionalesPorMes['dotacion_trabajo'][$mesNombre] = $calcularRubro([]);
+            
             // Gastos de Agasajos: 110112
             $rubrosInstitucionalesPorMes['gastos_agasajos'][$mesNombre] = $calcularRubro(['110112']);
             
@@ -501,6 +524,11 @@ class DashboardController extends Controller
         }
 
         // Calcular totales e impactos para rubros institucionales
+        $totalPresupuesto = 0;
+        foreach ($categorias as $categoria) {
+            $totalPresupuesto += $presupuestosFijos[$categoria];
+        }
+        
         foreach ($meses as $mesNombre => $mesNumero) {
             $totalMes = 0;
             foreach ($categorias as $categoria) {
@@ -514,15 +542,21 @@ class DashboardController extends Controller
         }
 
         // Agregar presupuesto para total e impacto 
-        $rubrosInstitucionalesPorMes['total']['presupuesto'] = 0;
-        $rubrosInstitucionalesPorMes['impacto']['presupuesto'] = 0;
+        $rubrosInstitucionalesPorMes['total']['presupuesto'] = $totalPresupuesto;
+        
+        // Calcular impacto % del presupuesto frente a ingresos totales
+        // Total Ingresos Presupuestado = $12.856.980.087
+        $presupuestoIngresosTotal = $presupuestoIngresos; // Usar el valor de presupuesto de ingresos definido arriba
+        $impactoPresupuesto = $presupuestoIngresosTotal > 0 ? 
+            ($totalPresupuesto / $presupuestoIngresosTotal) * 100 : 0;
+        $rubrosInstitucionalesPorMes['impacto']['presupuesto'] = $impactoPresupuesto;
 
         // Calcular datos específicos para MEMBRESIAS Y CONVENIOS por mes
         $membresiasYConveniosPorMes = [];
         
-        // Inicializar estructura para MEMBRESIAS Y CONVENIOS
+        // Inicializar estructura para MEMBRESIAS Y CONVENIOS con presupuestos fijos
         $membresiasYConveniosPorMes['bachillerato_internacional'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 284954040,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -587,16 +621,25 @@ class DashboardController extends Controller
             $membresiasYConveniosPorMes['impacto'][$mesNombre] = $impacto;
         }
 
+        // Calcular presupuesto total para membresias y convenios
+        $totalPresupuestoMembresias = $membresiasYConveniosPorMes['bachillerato_internacional']['presupuesto'] +
+                                     $membresiasYConveniosPorMes['accbi']['presupuesto'] +
+                                     $membresiasYConveniosPorMes['red_papaz']['presupuesto'];
+        
         // Agregar presupuesto para total e impacto 
-        $membresiasYConveniosPorMes['total']['presupuesto'] = 0;
-        $membresiasYConveniosPorMes['impacto']['presupuesto'] = 0;
+        $membresiasYConveniosPorMes['total']['presupuesto'] = $totalPresupuestoMembresias;
+        
+        // Calcular impacto % del presupuesto frente a ingresos totales
+        $impactoPresupuestoMembresias = $presupuestoIngresos > 0 ? 
+            ($totalPresupuestoMembresias / $presupuestoIngresos) * 100 : 0;
+        $membresiasYConveniosPorMes['impacto']['presupuesto'] = $impactoPresupuestoMembresias;
 
         // Calcular datos específicos para SERVICIOS PUBLICOS por mes
         $serviciosPublicosPorMes = [];
         
-        // Inicializar estructura para SERVICIOS PUBLICOS
+        // Inicializar estructura para SERVICIOS PUBLICOS con presupuestos fijos
         $serviciosPublicosPorMes['agua'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 10883921,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -609,7 +652,7 @@ class DashboardController extends Controller
         ];
         
         $serviciosPublicosPorMes['energia'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 119406196,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -622,7 +665,7 @@ class DashboardController extends Controller
         ];
         
         $serviciosPublicosPorMes['telefono'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 32518205,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -635,7 +678,7 @@ class DashboardController extends Controller
         ];
         
         $serviciosPublicosPorMes['vigilancia'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 177134680,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -648,7 +691,7 @@ class DashboardController extends Controller
         ];
         
         $serviciosPublicosPorMes['internet_arrendamientos'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 156656907,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -698,16 +741,27 @@ class DashboardController extends Controller
             $serviciosPublicosPorMes['impacto'][$mesNombre] = $impacto;
         }
 
+        // Calcular presupuesto total para servicios públicos
+        $totalPresupuestoServicios = $serviciosPublicosPorMes['agua']['presupuesto'] +
+                                    $serviciosPublicosPorMes['energia']['presupuesto'] +
+                                    $serviciosPublicosPorMes['telefono']['presupuesto'] +
+                                    $serviciosPublicosPorMes['vigilancia']['presupuesto'] +
+                                    $serviciosPublicosPorMes['internet_arrendamientos']['presupuesto'];
+        
         // Agregar presupuesto para total e impacto 
-        $serviciosPublicosPorMes['total']['presupuesto'] = 0;
-        $serviciosPublicosPorMes['impacto']['presupuesto'] = 0;
+        $serviciosPublicosPorMes['total']['presupuesto'] = $totalPresupuestoServicios;
+        
+        // Calcular impacto % del presupuesto frente a ingresos totales
+        $impactoPresupuestoServicios = $presupuestoIngresos > 0 ? 
+            ($totalPresupuestoServicios / $presupuestoIngresos) * 100 : 0;
+        $serviciosPublicosPorMes['impacto']['presupuesto'] = $impactoPresupuestoServicios;
 
         // Calcular datos específicos para OTROS EGRESOS por mes
         $otrosEgresosPorMes = [];
         
-        // Inicializar estructura para OTROS EGRESOS
+        // Inicializar estructura para OTROS EGRESOS con presupuestos fijos
         $otrosEgresosPorMes['honorarios'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 173054567,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -720,7 +774,7 @@ class DashboardController extends Controller
         ];
         
         $otrosEgresosPorMes['legales_sanciones'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 6020070,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -733,7 +787,7 @@ class DashboardController extends Controller
         ];
         
         $otrosEgresosPorMes['comisiones_bancarias'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 143612273,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -746,7 +800,7 @@ class DashboardController extends Controller
         ];
         
         $otrosEgresosPorMes['mensajeria_acarreos'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 1806021,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -759,7 +813,7 @@ class DashboardController extends Controller
         ];
         
         $otrosEgresosPorMes['impto_industria_comercio'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 89998861,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -772,7 +826,7 @@ class DashboardController extends Controller
         ];
         
         $otrosEgresosPorMes['plan_seguridad_salud'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 28224382,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -798,7 +852,7 @@ class DashboardController extends Controller
         ];
         
         $otrosEgresosPorMes['impto_renta'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 204200774,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -811,7 +865,7 @@ class DashboardController extends Controller
         ];
         
         $otrosEgresosPorMes['arrendamientos'] = [
-            'presupuesto' => 0,
+            'presupuesto' => 1386750155,
             'junio' => 0,
             'julio' => 0,
             'agosto' => 0,
@@ -877,9 +931,24 @@ class DashboardController extends Controller
             $otrosEgresosPorMes['impacto'][$mesNombre] = $impacto;
         }
 
+        // Calcular presupuesto total para otros egresos
+        $totalPresupuestoOtrosEgresos = $otrosEgresosPorMes['honorarios']['presupuesto'] +
+                                       $otrosEgresosPorMes['legales_sanciones']['presupuesto'] +
+                                       $otrosEgresosPorMes['comisiones_bancarias']['presupuesto'] +
+                                       $otrosEgresosPorMes['mensajeria_acarreos']['presupuesto'] +
+                                       $otrosEgresosPorMes['impto_industria_comercio']['presupuesto'] +
+                                       $otrosEgresosPorMes['plan_seguridad_salud']['presupuesto'] +
+                                       $otrosEgresosPorMes['otros_egresos_retencion']['presupuesto'] +
+                                       $otrosEgresosPorMes['impto_renta']['presupuesto'] +
+                                       $otrosEgresosPorMes['arrendamientos']['presupuesto'];
+        
         // Agregar presupuesto para total e impacto 
-        $otrosEgresosPorMes['total']['presupuesto'] = 0;
-        $otrosEgresosPorMes['impacto']['presupuesto'] = 0;
+        $otrosEgresosPorMes['total']['presupuesto'] = $totalPresupuestoOtrosEgresos;
+        
+        // Calcular impacto % del presupuesto frente a ingresos totales
+        $impactoPresupuestoOtrosEgresos = $presupuestoIngresos > 0 ? 
+            ($totalPresupuestoOtrosEgresos / $presupuestoIngresos) * 100 : 0;
+        $otrosEgresosPorMes['impacto']['presupuesto'] = $impactoPresupuestoOtrosEgresos;
 
         // Calcular Contratos Externos por mes
         $contratosExternosPorMes = [];
@@ -907,8 +976,14 @@ class DashboardController extends Controller
         
         // Inicializar estructuras adicionales
         foreach ($categoriasContratosExternos as $categoria => $centrosCosto) {
-            // Presupuesto (hardcodeado en 0 por ahora)
-            $contratosExternosPorMes[$categoria]['presupuesto'] = 0;
+            // Presupuesto (valores definidos)
+            if ($categoria === 'cafeteria') {
+                $contratosExternosPorMes[$categoria]['presupuesto'] = 599725348;
+            } elseif ($categoria === 'transporte') {
+                $contratosExternosPorMes[$categoria]['presupuesto'] = 1231729426;
+            } else {
+                $contratosExternosPorMes[$categoria]['presupuesto'] = 0;
+            }
             
             // Total por categoría
             $totalCategoria = 0;
@@ -932,7 +1007,7 @@ class DashboardController extends Controller
         }
         
         // Presupuesto y totales generales
-        $contratosExternosPorMes['presupuesto']['total'] = 0;
+        $contratosExternosPorMes['presupuesto']['total'] = 599725348 + 1231729426; // Cafetería + Transporte
         $totalGeneralContratos = 0;
         foreach ($meses as $mesNombre => $mesNumero) {
             $totalGeneralContratos += $contratosExternosPorMes['total'][$mesNombre];
@@ -945,7 +1020,8 @@ class DashboardController extends Controller
             $contratosExternosPorMes['impacto'][$mesNombre] = $ingresosPorMes[$mesNombre] > 0 ? 
                 ($contratosExternosPorMes['total'][$mesNombre] / $ingresosPorMes[$mesNombre]) * 100 : 0;
         }
-        $contratosExternosPorMes['impacto']['presupuesto'] = 0;
+        $contratosExternosPorMes['impacto']['presupuesto'] = 12856980087 > 0 ? 
+            ($contratosExternosPorMes['presupuesto']['total'] / 12856980087) * 100 : 0;
         $contratosExternosPorMes['impacto']['total'] = $totalIngresos > 0 ? 
             ($totalGeneralContratos / $totalIngresos) * 100 : 0;
 

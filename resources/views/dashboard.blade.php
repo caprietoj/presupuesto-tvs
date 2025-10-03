@@ -993,6 +993,19 @@
                                         <td class="number-cell clickable-cell" data-tipo="elementos_aseo" data-mes="2" data-year="{{ date('Y') + 1 }}">${{ number_format($rubrosInstitucionalesPorMes['elementos_aseo']['febrero'], 0, ',', '.') }}</td>
                                     </tr>
                                     <tr>
+                                        <td><strong>DOTACIÓN DE TRABAJO</strong></td>
+                                        <td class="number-cell">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['presupuesto'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['junio'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['julio'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['agosto'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="9" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['septiembre'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="10" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['octubre'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="11" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['noviembre'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="12" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['diciembre'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="1" data-year="{{ date('Y') + 1 }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['enero'], 0, ',', '.') }}</td>
+                                        <td class="number-cell clickable-cell" data-tipo="dotacion_trabajo" data-mes="2" data-year="{{ date('Y') + 1 }}">${{ number_format($rubrosInstitucionalesPorMes['dotacion_trabajo']['febrero'], 0, ',', '.') }}</td>
+                                    </tr>
+                                    <tr>
                                         <td><strong>GASTOS DE AGASAJOS</strong></td>
                                         <td class="number-cell">${{ number_format($rubrosInstitucionalesPorMes['gastos_agasajos']['presupuesto'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="gastos_agasajos" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($rubrosInstitucionalesPorMes['gastos_agasajos']['junio'], 0, ',', '.') }}</td>
@@ -1561,7 +1574,7 @@
                                 <tbody>
                                     <tr>
                                         <td><strong>CAPACITACIÓN Y ADMINISTRACIÓN</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(41682742, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="capacitacion_administracion" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['capacitacion_administracion'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="capacitacion_administracion" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['capacitacion_administracion'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="capacitacion_administracion" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['capacitacion_administracion'], 0, ',', '.') }}</td>
@@ -1574,7 +1587,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>MATERIAL IMPORTADO</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(82399932, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="material_importado" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['material_importado'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="material_importado" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['material_importado'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="material_importado" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['material_importado'], 0, ',', '.') }}</td>
@@ -1587,7 +1600,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>BIBLIOTECA INSTITUCIONAL</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(29456000, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="biblioteca_institucional" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['biblioteca_institucional'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="biblioteca_institucional" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['biblioteca_institucional'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="biblioteca_institucional" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['biblioteca_institucional'], 0, ',', '.') }}</td>
@@ -1600,7 +1613,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>MATERIALES PARA CLASES</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(23461272, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="materiales_clases" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['materiales_clases'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="materiales_clases" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['materiales_clases'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="materiales_clases" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['materiales_clases'], 0, ',', '.') }}</td>
@@ -1613,7 +1626,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>MATERIAL DEPORTIVO</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(12613480, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="material_deportivo" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['material_deportivo'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="material_deportivo" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['material_deportivo'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="material_deportivo" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['material_deportivo'], 0, ',', '.') }}</td>
@@ -1626,7 +1639,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>MUSICALES</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(8129357, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="musicales" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['musicales'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="musicales" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['musicales'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="musicales" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['musicales'], 0, ',', '.') }}</td>
@@ -1639,7 +1652,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>PART TIME TEACHER- REEMPLAZOS</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(4970700, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="part_time_teacher" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['part_time_teacher'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="part_time_teacher" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['part_time_teacher'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="part_time_teacher" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['part_time_teacher'], 0, ',', '.') }}</td>
@@ -1652,7 +1665,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>INSUMOS INSTITUCIONALES DE SECCIÓN (TECNOLOGÍA)</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(68800800, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="insumos_tecnologia" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['insumos_tecnologia'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="insumos_tecnologia" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['insumos_tecnologia'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="insumos_tecnologia" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['insumos_tecnologia'], 0, ',', '.') }}</td>
@@ -1665,7 +1678,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>PEP</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(5271684, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="pep" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['pep'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="pep" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['pep'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="pep" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['pep'], 0, ',', '.') }}</td>
@@ -1691,7 +1704,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>PAI</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(11309000, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="pai" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['pai'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="pai" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['pai'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="pai" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['pai'], 0, ',', '.') }}</td>
@@ -1717,7 +1730,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>CONSEJERÍA UNIVERSITARIA</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(16000000, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="consejeria_universitaria" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['consejeria_universitaria'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="consejeria_universitaria" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['consejeria_universitaria'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="consejeria_universitaria" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['consejeria_universitaria'], 0, ',', '.') }}</td>
@@ -1730,7 +1743,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>DIRECCIÓN GENERAL</strong></td>
-                                        <td class="number-cell">$0</td>
+                                        <td class="number-cell">${{ number_format(27308870, 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="direccion_general" data-mes="6" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['direccion_general'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="direccion_general" data-mes="7" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['direccion_general'], 0, ',', '.') }}</td>
                                         <td class="number-cell clickable-cell" data-tipo="direccion_general" data-mes="8" data-year="{{ date('Y') }}">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['direccion_general'], 0, ',', '.') }}</td>
@@ -1743,7 +1756,7 @@
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL SECCIONES ACADEMIA GENERAL</strong></td>
-                                        <td class="number-cell"><strong>$0</strong></td>
+                                        <td class="number-cell"><strong>${{ number_format(331403837, 0, ',', '.') }}</strong></td>
                                         <td class="number-cell"><strong>${{ number_format($seccionesAcademiaGeneralPorMes['junio']['total'], 0, ',', '.') }}</strong></td>
                                         <td class="number-cell"><strong>${{ number_format($seccionesAcademiaGeneralPorMes['julio']['total'], 0, ',', '.') }}</strong></td>
                                         <td class="number-cell"><strong>${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['total'], 0, ',', '.') }}</strong></td>
@@ -1756,7 +1769,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>IMPACTO % FRENTE A INGRESOS TOTALES</strong></td>
-                                        <td class="number-cell">$0%</td>
+                                        <td class="number-cell">2.58%</td>
                                         <td class="number-cell">${{ number_format($seccionesAcademiaGeneralPorMes['junio']['impacto'], 2, ',', '.') }}%</td>
                                         <td class="number-cell">${{ number_format($seccionesAcademiaGeneralPorMes['julio']['impacto'], 2, ',', '.') }}%</td>
                                         <td class="number-cell">${{ number_format($seccionesAcademiaGeneralPorMes['agosto']['impacto'], 2, ',', '.') }}%</td>

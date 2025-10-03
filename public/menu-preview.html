@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview - Menú Mejorado Sistema Presupuesto TVS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* Estilos del navigation.css integrados */
+        .transition-transform {
+            transition: transform 0.2s ease-in-out;
+        }
+        nav a:hover {
+            transform: translateX(2px);
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .logo-animation {
+            animation: pulse-soft 3s ease-in-out infinite;
+        }
+        button:focus, a:focus {
+            outline: 2px solid #818cf8;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav x-data="{ 
+        menuOpen: true,
+        seccionesOperativasOpen: false,
+        configuracionesOpen: false
+    }" class="bg-[#2a3d5d] border-b border-[#1e2d42] shadow-lg">
+        <!-- Primary Navigation Menu -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <!-- Menu Hamburguesa -->
+                    <button @click="menuOpen = ! menuOpen" class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-[#1e2d42] focus:outline-none focus:bg-[#1e2d42] focus:text-white transition duration-150 ease-in-out">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': menuOpen, 'inline-flex': ! menuOpen }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': ! menuOpen, 'inline-flex': menuOpen }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <!-- Logo y Título -->
+                    <div class="flex items-center ml-4">
+                        <svg class="h-8 w-8 text-white logo-animation" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <span class="ml-2 text-xl font-bold text-white">Sistema Presupuesto TVS</span>
+                    </div>
+                </div>
+
+                <!-- Settings Dropdown -->
+                <div class="flex items-center">
+                    <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white hover:text-gray-200 bg-[#1e2d42] hover:bg-[#162335] focus:outline-none transition ease-in-out duration-150">
+                        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <div>Usuario Demo</div>
+                        <div class="ms-1">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menu Principal Desplegable -->
+            <div x-show="menuOpen" class="border-t border-[#1e2d42] bg-white shadow-xl rounded-b-lg mt-1">
+                <div class="px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
+                    <!-- Dashboard -->
+                    <a href="#" class="flex items-center px-4 py-3 text-sm text-gray-700 bg-[#e8eef5] text-[#2a3d5d] font-semibold hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition border-l-4 border-[#2a3d5d]">
+                        <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        Dashboard Presupuesto
+                    </a>
+
+                    <!-- Resumen Secciones -->
+                    <a href="#" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                        <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Resumen Secciones
+                    </a>
+
+                    <a href="#" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                        <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Detallado Secciones
+                    </a>
+
+                    <!-- Secciones Operativas -->
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                        <button @click="seccionesOperativasOpen = ! seccionesOperativasOpen" class="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                Secciones Operativas
+                            </div>
+                            <svg class="h-4 w-4 transition-transform" :class="{'rotate-180': seccionesOperativasOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="seccionesOperativasOpen" x-collapse class="ml-8 mt-1 space-y-1">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                IB
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                Equipo y Dotación Salones
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                Aseo y Cafetería
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                Tecnología
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                Deportes
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Configuraciones Section -->
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                        <button @click="configuracionesOpen = ! configuracionesOpen" class="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                            <div class="flex items-center">
+                                <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                Configuraciones
+                            </div>
+                            <svg class="h-4 w-4 transition-transform" :class="{'rotate-180': configuracionesOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="configuracionesOpen" x-collapse class="ml-8 mt-1 space-y-1">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                Importar Archivo
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Presupuesto Secciones
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido de demo -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">🎨 Preview del Menú Mejorado</h1>
+            <p class="text-gray-600 mb-6">Esta es una vista previa del nuevo menú de navegación del Sistema Presupuesto TVS.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-[#e8eef5] p-6 rounded-lg">
+                    <h2 class="text-xl font-semibold text-[#2a3d5d] mb-3">✨ Características Principales</h2>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>✅ Diseño moderno con color institucional #2a3d5d</li>
+                        <li>✅ Menús desplegables interactivos</li>
+                        <li>✅ Iconos SVG para cada sección</li>
+                        <li>✅ Estado activo visible con borde lateral</li>
+                        <li>✅ Animaciones suaves</li>
+                        <li>✅ 100% responsive</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-green-50 p-6 rounded-lg">
+                    <h2 class="text-xl font-semibold text-green-700 mb-3">📱 Responsive</h2>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>✅ Adaptado para desktop y móvil</li>
+                        <li>✅ Menú hamburguesa funcional</li>
+                        <li>✅ Scroll personalizado</li>
+                        <li>✅ Touch-friendly en móviles</li>
+                        <li>✅ Altura máxima optimizada</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+/* Estilos mejorados para la navegación */
+
+/* Animaciones suaves para los menús desplegables */
+[x-cloak] {
+    display: none !important;
+}
+
+/* Transiciones suaves para los iconos */
+.transition-transform {
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Efecto hover mejorado para los enlaces del menú */
+nav a:hover {
+    transform: translateX(2px);
+}
+
+/* Scrollbar personalizado para el menú */
+.max-h-\[80vh\]::-webkit-scrollbar {
+    width: 6px;
+}
+
+.max-h-\[80vh\]::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.max-h-\[80vh\]::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.max-h-\[80vh\]::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Efecto de sombra para el menú desplegable */
+nav > div > div:last-child {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Mejora visual para los botones activos */
+.bg-\[#e8eef5\] {
+    border-left: 4px solid #2a3d5d;
+}
+
+/* Animación para el logo */
+@keyframes pulse-soft {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+nav svg:first-of-type {
+    animation: pulse-soft 3s ease-in-out infinite;
+}
+
+/* Mejora de accesibilidad en focus */
+button:focus,
+a:focus {
+    outline: 2px solid #2a3d5d;
+    outline-offset: 2px;
+}
+
+/* Responsive: mejor espaciado en móvil */
+@media (max-width: 640px) {
+    nav a,
+    nav button {
+        font-size: 0.9rem;
+    }
+}
