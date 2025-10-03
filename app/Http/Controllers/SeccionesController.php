@@ -569,7 +569,7 @@ class SeccionesController extends Controller
     {
         // Definir los conceptos y sus centros de costo correspondientes
         $conceptosCentrosCosto = [
-            'Orientación Universitaria' => ['131601']
+            'Orientación Universitaria' => ['130803']
         ];
 
         $resultados = [];
