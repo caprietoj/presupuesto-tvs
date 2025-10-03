@@ -674,612 +674,123 @@ class SeccionesController extends Controller
 
     public function aseoCafeteria()
     {
-        // Conceptos de Aseo y Cafetería con sus centros de costo
-        $conceptos = [
-            'Utilidad Cafetería' => [
-                'centros_costo' => [], // Será calculado desde movimientos
-                'presupuesto_aprobado' => 0,
-            ],
-            'Utilidad Transporte' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Elementos de Aseo' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Mantenimiento Instalaciones' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ]
-        ];
-
-        $datos = [];
-        $anoActual = date('Y');
-
-        foreach ($conceptos as $concepto => $config) {
-            // Buscar movimientos relacionados por descripción
-            $movimientosQuery = Movimiento::whereYear('fecha', $anoActual);
-            
-            switch ($concepto) {
-                case 'Utilidad Cafetería':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%cafeteria%')
-                              ->orWhere('descripcion', 'LIKE', '%CAFETERIA%')
-                              ->orWhere('descripcion', 'LIKE', '%restaurante%')
-                              ->orWhere('descripcion', 'LIKE', '%RESTAURANTE%');
-                    });
-                    break;
-                case 'Utilidad Transporte':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%transporte%')
-                              ->orWhere('descripcion', 'LIKE', '%TRANSPORTE%')
-                              ->orWhere('descripcion', 'LIKE', '%bus%')
-                              ->orWhere('descripcion', 'LIKE', '%BUS%');
-                    });
-                    break;
-                case 'Elementos de Aseo':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%aseo%')
-                              ->orWhere('descripcion', 'LIKE', '%ASEO%')
-                              ->orWhere('descripcion', 'LIKE', '%limpieza%')
-                              ->orWhere('descripcion', 'LIKE', '%LIMPIEZA%');
-                    });
-                    break;
-                case 'Mantenimiento Instalaciones':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%mantenimiento%')
-                              ->orWhere('descripcion', 'LIKE', '%MANTENIMIENTO%')
-                              ->orWhere('descripcion', 'LIKE', '%reparacion%')
-                              ->orWhere('descripcion', 'LIKE', '%REPARACION%');
-                    });
-                    break;
-            }
-
-            $movimientos = $movimientosQuery->get();
-            
-            // Calcular totales por mes
-            $totalEjecutado = 0;
-            $meses = [
-                7 => 'julio', 8 => 'agosto', 9 => 'septiembre', 10 => 'octubre',
-                11 => 'noviembre', 12 => 'diciembre', 1 => 'enero', 2 => 'febrero',
-                3 => 'marzo', 4 => 'abril', 5 => 'mayo', 6 => 'junio'
-            ];
-
-            $datosMeses = [];
-            foreach ($meses as $numMes => $nombreMes) {
-                $valorMes = $movimientos->filter(function($mov) use ($numMes) {
-                    return (int)date('n', strtotime($mov->fecha)) === $numMes;
-                })->sum('valor');
-                
-                $datosMeses[$nombreMes] = abs($valorMes);
-                $totalEjecutado += abs($valorMes);
-            }
-
-            // Inicializar meses faltantes con cero si no están en la consulta
-            $todosMeses = ['julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio'];
-            foreach ($todosMeses as $mes) {
-                if (!isset($datosMeses[$mes])) {
-                    $datosMeses[$mes] = 0;
-                }
-            }
-
-            $presupuestoAprobado = $config['presupuesto_aprobado'];
-            $presupuestoPorEjecutar = max(0, $presupuestoAprobado - $totalEjecutado);
-            $porcentajeRestante = $presupuestoAprobado > 0 ? ($presupuestoPorEjecutar / $presupuestoAprobado) * 100 : 0;
-
-            $datos[$concepto] = array_merge([
-                'presupuesto_aprobado' => $presupuestoAprobado,
-                'ejecutado' => $totalEjecutado,
-                'presupuesto_por_ejecutar' => $presupuestoPorEjecutar,
-                'porcentaje_restante' => round($porcentajeRestante, 2),
-            ], $datosMeses);
-        }
-
+        $datos = $this->procesarSeccionSimplificada('ASEO Y CAFETERÍA');
         return view('secciones.aseo-cafeteria', compact('datos'));
     }
 
     public function equipoDotacionSalones()
     {
-        // Conceptos de Equipo y Dotación Salones
-        $conceptos = [
-            'Mobiliario Aulas' => [
-                'centros_costo' => [], 
-                'presupuesto_aprobado' => 0,
-            ],
-            'Equipos Didácticos' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Material de Oficina' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Decoración Aulas' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ]
-        ];
-
-        $datos = [];
-        $anoActual = date('Y');
-
-        foreach ($conceptos as $concepto => $config) {
-            $movimientosQuery = Movimiento::whereYear('fecha', $anoActual);
-            
-            switch ($concepto) {
-                case 'Mobiliario Aulas':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%mobiliario%')
-                              ->orWhere('descripcion', 'LIKE', '%MOBILIARIO%')
-                              ->orWhere('descripcion', 'LIKE', '%escritorio%')
-                              ->orWhere('descripcion', 'LIKE', '%ESCRITORIO%')
-                              ->orWhere('descripcion', 'LIKE', '%silla%')
-                              ->orWhere('descripcion', 'LIKE', '%SILLA%');
-                    });
-                    break;
-                case 'Equipos Didácticos':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%didactico%')
-                              ->orWhere('descripcion', 'LIKE', '%DIDACTICO%')
-                              ->orWhere('descripcion', 'LIKE', '%educativo%')
-                              ->orWhere('descripcion', 'LIKE', '%EDUCATIVO%');
-                    });
-                    break;
-                case 'Material de Oficina':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%oficina%')
-                              ->orWhere('descripcion', 'LIKE', '%OFICINA%')
-                              ->orWhere('descripcion', 'LIKE', '%papeleria%')
-                              ->orWhere('descripcion', 'LIKE', '%PAPELERIA%');
-                    });
-                    break;
-                case 'Decoración Aulas':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%decoracion%')
-                              ->orWhere('descripcion', 'LIKE', '%DECORACION%')
-                              ->orWhere('descripcion', 'LIKE', '%ornato%')
-                              ->orWhere('descripcion', 'LIKE', '%ORNATO%');
-                    });
-                    break;
-            }
-
-            $movimientos = $movimientosQuery->get();
-            
-            $totalEjecutado = 0;
-            $meses = [
-                7 => 'julio', 8 => 'agosto', 9 => 'septiembre', 10 => 'octubre',
-                11 => 'noviembre', 12 => 'diciembre', 1 => 'enero', 2 => 'febrero',
-                3 => 'marzo', 4 => 'abril', 5 => 'mayo', 6 => 'junio'
-            ];
-
-            $datosMeses = [];
-            foreach ($meses as $numMes => $nombreMes) {
-                $valorMes = $movimientos->filter(function($mov) use ($numMes) {
-                    return (int)date('n', strtotime($mov->fecha)) === $numMes;
-                })->sum('valor');
-                
-                $datosMeses[$nombreMes] = abs($valorMes);
-                $totalEjecutado += abs($valorMes);
-            }
-
-            $todosMeses = ['julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio'];
-            foreach ($todosMeses as $mes) {
-                if (!isset($datosMeses[$mes])) {
-                    $datosMeses[$mes] = 0;
-                }
-            }
-
-            $presupuestoAprobado = $config['presupuesto_aprobado'];
-            $presupuestoPorEjecutar = max(0, $presupuestoAprobado - $totalEjecutado);
-            $porcentajeRestante = $presupuestoAprobado > 0 ? ($presupuestoPorEjecutar / $presupuestoAprobado) * 100 : 0;
-
-            $datos[$concepto] = array_merge([
-                'presupuesto_aprobado' => $presupuestoAprobado,
-                'ejecutado' => $totalEjecutado,
-                'presupuesto_por_ejecutar' => $presupuestoPorEjecutar,
-                'porcentaje_restante' => round($porcentajeRestante, 2),
-            ], $datosMeses);
-        }
-
+        $datos = $this->procesarSeccionSimplificada('EQUIPO Y DOTACIÓN SALONES');
         return view('secciones.equipo-dotacion-salones', compact('datos'));
     }
 
     public function deportes()
     {
-        // Conceptos de Deportes
-        $conceptos = [
-            'Implementos Deportivos' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Uniformes Deportivos' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Mantenimiento Instalaciones Deportivas' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Competencias Deportivas' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ]
-        ];
-
-        $datos = [];
-        $anoActual = date('Y');
-
-        foreach ($conceptos as $concepto => $config) {
-            $movimientosQuery = Movimiento::whereYear('fecha', $anoActual);
-            
-            switch ($concepto) {
-                case 'Implementos Deportivos':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%implemento%')
-                              ->orWhere('descripcion', 'LIKE', '%IMPLEMENTO%')
-                              ->orWhere('descripcion', 'LIKE', '%deporte%')
-                              ->orWhere('descripcion', 'LIKE', '%DEPORTE%')
-                              ->orWhere('descripcion', 'LIKE', '%balon%')
-                              ->orWhere('descripcion', 'LIKE', '%BALON%');
-                    });
-                    break;
-                case 'Uniformes Deportivos':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%uniforme%')
-                              ->orWhere('descripcion', 'LIKE', '%UNIFORME%')
-                              ->orWhere('descripcion', 'LIKE', '%camiseta%')
-                              ->orWhere('descripcion', 'LIKE', '%CAMISETA%');
-                    });
-                    break;
-                case 'Mantenimiento Instalaciones Deportivas':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%cancha%')
-                              ->orWhere('descripcion', 'LIKE', '%CANCHA%')
-                              ->orWhere('descripcion', 'LIKE', '%gimnasio%')
-                              ->orWhere('descripcion', 'LIKE', '%GIMNASIO%');
-                    });
-                    break;
-                case 'Competencias Deportivas':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%competencia%')
-                              ->orWhere('descripcion', 'LIKE', '%COMPETENCIA%')
-                              ->orWhere('descripcion', 'LIKE', '%torneo%')
-                              ->orWhere('descripcion', 'LIKE', '%TORNEO%');
-                    });
-                    break;
-            }
-
-            $movimientos = $movimientosQuery->get();
-            
-            $totalEjecutado = 0;
-            $meses = [
-                7 => 'julio', 8 => 'agosto', 9 => 'septiembre', 10 => 'octubre',
-                11 => 'noviembre', 12 => 'diciembre', 1 => 'enero', 2 => 'febrero',
-                3 => 'marzo', 4 => 'abril', 5 => 'mayo', 6 => 'junio'
-            ];
-
-            $datosMeses = [];
-            foreach ($meses as $numMes => $nombreMes) {
-                $valorMes = $movimientos->filter(function($mov) use ($numMes) {
-                    return (int)date('n', strtotime($mov->fecha)) === $numMes;
-                })->sum('valor');
-                
-                $datosMeses[$nombreMes] = abs($valorMes);
-                $totalEjecutado += abs($valorMes);
-            }
-
-            $todosMeses = ['julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio'];
-            foreach ($todosMeses as $mes) {
-                if (!isset($datosMeses[$mes])) {
-                    $datosMeses[$mes] = 0;
-                }
-            }
-
-            $presupuestoAprobado = $config['presupuesto_aprobado'];
-            $presupuestoPorEjecutar = max(0, $presupuestoAprobado - $totalEjecutado);
-            $porcentajeRestante = $presupuestoAprobado > 0 ? ($presupuestoPorEjecutar / $presupuestoAprobado) * 100 : 0;
-
-            $datos[$concepto] = array_merge([
-                'presupuesto_aprobado' => $presupuestoAprobado,
-                'ejecutado' => $totalEjecutado,
-                'presupuesto_por_ejecutar' => $presupuestoPorEjecutar,
-                'porcentaje_restante' => round($porcentajeRestante, 2),
-            ], $datosMeses);
-        }
-
+        $datos = $this->procesarSeccionSimplificada('DEPORTES');
         return view('secciones.deportes', compact('datos'));
     }
 
     public function honorarios()
     {
-        // Conceptos de Honorarios
-        $conceptos = [
-            'Honorarios Profesionales' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Servicios de Consultoría' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Asesorías Especializadas' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ],
-            'Servicios Técnicos' => [
-                'centros_costo' => [],
-                'presupuesto_aprobado' => 0,
-            ]
-        ];
-
-        $datos = [];
-        $anoActual = date('Y');
-
-        foreach ($conceptos as $concepto => $config) {
-            $movimientosQuery = Movimiento::whereYear('fecha', $anoActual);
-            
-            switch ($concepto) {
-                case 'Honorarios Profesionales':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%honorario%')
-                              ->orWhere('descripcion', 'LIKE', '%HONORARIO%')
-                              ->orWhere('descripcion', 'LIKE', '%profesional%')
-                              ->orWhere('descripcion', 'LIKE', '%PROFESIONAL%');
-                    });
-                    break;
-                case 'Servicios de Consultoría':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%consultoria%')
-                              ->orWhere('descripcion', 'LIKE', '%CONSULTORIA%')
-                              ->orWhere('descripcion', 'LIKE', '%consultor%')
-                              ->orWhere('descripcion', 'LIKE', '%CONSULTOR%');
-                    });
-                    break;
-                case 'Asesorías Especializadas':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%asesoria%')
-                              ->orWhere('descripcion', 'LIKE', '%ASESORIA%')
-                              ->orWhere('descripcion', 'LIKE', '%asesor%')
-                              ->orWhere('descripcion', 'LIKE', '%ASESOR%');
-                    });
-                    break;
-                case 'Servicios Técnicos':
-                    $movimientosQuery->where(function($query) {
-                        $query->where('descripcion', 'LIKE', '%tecnico%')
-                              ->orWhere('descripcion', 'LIKE', '%TECNICO%')
-                              ->orWhere('descripcion', 'LIKE', '%especializado%')
-                              ->orWhere('descripcion', 'LIKE', '%ESPECIALIZADO%');
-                    });
-                    break;
-            }
-
-            $movimientos = $movimientosQuery->get();
-            
-            $totalEjecutado = 0;
-            $meses = [
-                7 => 'julio', 8 => 'agosto', 9 => 'septiembre', 10 => 'octubre',
-                11 => 'noviembre', 12 => 'diciembre', 1 => 'enero', 2 => 'febrero',
-                3 => 'marzo', 4 => 'abril', 5 => 'mayo', 6 => 'junio'
-            ];
-
-            $datosMeses = [];
-            foreach ($meses as $numMes => $nombreMes) {
-                $valorMes = $movimientos->filter(function($mov) use ($numMes) {
-                    return (int)date('n', strtotime($mov->fecha)) === $numMes;
-                })->sum('valor');
-                
-                $datosMeses[$nombreMes] = abs($valorMes);
-                $totalEjecutado += abs($valorMes);
-            }
-
-            $todosMeses = ['julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio'];
-            foreach ($todosMeses as $mes) {
-                if (!isset($datosMeses[$mes])) {
-                    $datosMeses[$mes] = 0;
-                }
-            }
-
-            $presupuestoAprobado = $config['presupuesto_aprobado'];
-            $presupuestoPorEjecutar = max(0, $presupuestoAprobado - $totalEjecutado);
-            $porcentajeRestante = $presupuestoAprobado > 0 ? ($presupuestoPorEjecutar / $presupuestoAprobado) * 100 : 0;
-
-            $datos[$concepto] = array_merge([
-                'presupuesto_aprobado' => $presupuestoAprobado,
-                'ejecutado' => $totalEjecutado,
-                'presupuesto_por_ejecutar' => $presupuestoPorEjecutar,
-                'porcentaje_restante' => round($porcentajeRestante, 2),
-            ], $datosMeses);
-        }
-
+        $datos = $this->procesarSeccionSimplificada('HONORARIOS');
         return view('secciones.honorarios', compact('datos'));
     }
 
     public function dotaciones()
     {
-        $conceptos = [
-            'Uniformes Escolares' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Uniformes Administrativos' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Materiales Educativos' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Suministros de Oficina' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Uniformes Escolares' => ['uniforme', 'escolar'],
-            'Uniformes Administrativos' => ['uniforme', 'administrativo', 'personal'],
-            'Materiales Educativos' => ['material', 'educativo', 'didactico'],
-            'Suministros de Oficina' => ['suministro', 'oficina', 'papeleria']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('DOTACIONES');
         return view('secciones.dotaciones', compact('datos'));
     }
 
     public function agasajos()
     {
-        $conceptos = [
-            'Eventos Institucionales' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Celebraciones' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Refrigerios' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Actividades Especiales' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Eventos Institucionales' => ['evento', 'institucional', 'ceremonia'],
-            'Celebraciones' => ['celebracion', 'fiesta', 'festejo'],
-            'Refrigerios' => ['refrigerio', 'merienda', 'alimentacion'],
-            'Actividades Especiales' => ['actividad', 'especial', 'programa']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('AGASAJOS');
         return view('secciones.agasajos', compact('datos'));
     }
 
     public function tecnologia()
     {
-        $conceptos = [
-            'Hardware' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Software' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Infraestructura TI' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Mantenimiento Sistemas' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Hardware' => ['computador', 'laptop', 'hardware', 'equipo'],
-            'Software' => ['software', 'licencia', 'programa'],
-            'Infraestructura TI' => ['red', 'servidor', 'infraestructura'],
-            'Mantenimiento Sistemas' => ['mantenimiento', 'sistema', 'soporte']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('TECNOLOGÍA');
         return view('secciones.tecnologia', compact('datos'));
     }
 
     public function gastosContratacion()
     {
-        $conceptos = [
-            'Procesos de Selección' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Publicaciones' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Evaluaciones' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Documentación' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Procesos de Selección' => ['seleccion', 'contratacion', 'reclutamiento'],
-            'Publicaciones' => ['publicacion', 'aviso', 'anuncio'],
-            'Evaluaciones' => ['evaluacion', 'examen', 'prueba'],
-            'Documentación' => ['documentacion', 'tramite', 'papeleria']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('GASTOS DE CONTRATACIÓN');
         return view('secciones.gastos-contratacion', compact('datos'));
     }
 
     public function afiliacionesSuscripciones()
     {
-        $conceptos = [
-            'Membresías Profesionales' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Suscripciones Digitales' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Afiliaciones Gremiales' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Servicios en Línea' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Membresías Profesionales' => ['membresia', 'profesional', 'colegio'],
-            'Suscripciones Digitales' => ['suscripcion', 'digital', 'online'],
-            'Afiliaciones Gremiales' => ['afiliacion', 'gremial', 'asociacion'],
-            'Servicios en Línea' => ['servicio', 'linea', 'web']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('AFILIACIONES Y SUSCRIPCIONES');
         return view('secciones.afiliaciones-suscripciones', compact('datos'));
     }
 
     public function ib()
     {
-        $conceptos = [
-            'Materiales IB' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Capacitaciones IB' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Evaluaciones IB' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Certificaciones IB' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Materiales IB' => ['material', 'ib', 'bachillerato'],
-            'Capacitaciones IB' => ['capacitacion', 'entrenamiento', 'formacion'],
-            'Evaluaciones IB' => ['evaluacion', 'examen', 'assessment'],
-            'Certificaciones IB' => ['certificacion', 'diploma', 'titulo']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('IB');
         return view('secciones.ib', compact('datos'));
     }
 
     public function entrenamientos()
     {
-        $conceptos = [
-            'Capacitación Docente' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Formación Administrativa' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Seminarios' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Talleres Especializados' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Capacitación Docente' => ['capacitacion', 'docente', 'profesor'],
-            'Formación Administrativa' => ['formacion', 'administrativo', 'personal'],
-            'Seminarios' => ['seminario', 'conferencia', 'congreso'],
-            'Talleres Especializados' => ['taller', 'especializado', 'curso']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('ENTRENAMIENTOS');
         return view('secciones.entrenamientos', compact('datos'));
     }
 
     public function serviciosPublicos()
     {
-        $conceptos = [
-            'Energía Eléctrica' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Agua y Alcantarillado' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Gas Natural' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Telecomunicaciones' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Energía Eléctrica' => ['energia', 'electrica', 'luz'],
-            'Agua y Alcantarillado' => ['agua', 'alcantarillado', 'acueducto'],
-            'Gas Natural' => ['gas', 'natural', 'combustible'],
-            'Telecomunicaciones' => ['telefono', 'internet', 'comunicacion']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('SERVICIOS PÚBLICOS');
         return view('secciones.servicios-publicos', compact('datos'));
     }
 
     public function reparacionesMayores()
     {
-        $conceptos = [
-            'Infraestructura' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Sistemas Eléctricos' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Sistemas Hidráulicos' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Estructura Civil' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Infraestructura' => ['infraestructura', 'edificio', 'construccion'],
-            'Sistemas Eléctricos' => ['electrico', 'instalacion', 'cableado'],
-            'Sistemas Hidráulicos' => ['hidraulico', 'tuberia', 'fontaneria'],
-            'Estructura Civil' => ['estructura', 'civil', 'obra']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('REPARACIONES MAYORES');
         return view('secciones.reparaciones-mayores', compact('datos'));
     }
 
     public function reparacionMuebles()
     {
-        $conceptos = [
-            'Mobiliario Aulas' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Mobiliario Oficina' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Equipos y Enseres' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Tapicería' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Mobiliario Aulas' => ['mobiliario', 'aula', 'pupitres'],
-            'Mobiliario Oficina' => ['mueble', 'oficina', 'escritorio'],
-            'Equipos y Enseres' => ['equipo', 'enser', 'artefacto'],
-            'Tapicería' => ['tapiceria', 'tapizar', 'tela']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('REPARACIÓN DE MUEBLES');
         return view('secciones.reparacion-muebles', compact('datos'));
     }
 
     public function mercadeo()
     {
-        $conceptos = [
-            'Publicidad' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Marketing Digital' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Eventos Promocionales' => ['centros_costo' => [], 'presupuesto_aprobado' => 0],
-            'Material Publicitario' => ['centros_costo' => [], 'presupuesto_aprobado' => 0]
-        ];
-        $datos = $this->procesarDatosSeccion($conceptos, [
-            'Publicidad' => ['publicidad', 'promocion', 'anuncio'],
-            'Marketing Digital' => ['marketing', 'digital', 'redes'],
-            'Eventos Promocionales' => ['evento', 'promocional', 'campana'],
-            'Material Publicitario' => ['material', 'publicitario', 'volante']
-        ]);
+        $datos = $this->procesarSeccionSimplificada('MERCADEO');
         return view('secciones.mercadeo', compact('datos'));
+    }
+
+    /**
+     * Función simplificada para secciones operativas
+     * Devuelve una sola fila con el nombre de la sección como concepto
+     */
+    private function procesarSeccionSimplificada($nombreSeccion)
+    {
+        $datos = [];
+        
+        // Crear una sola fila con todos los valores en 0
+        $datos[$nombreSeccion] = [
+            'presupuesto_aprobado' => 0,
+            'ejecutado' => 0,
+            'presupuesto_por_ejecutar' => 0,
+            'porcentaje_restante' => 0,
+            'julio' => 0,
+            'agosto' => 0,
+            'septiembre' => 0,
+            'octubre' => 0,
+            'noviembre' => 0,
+            'diciembre' => 0,
+            'enero' => 0,
+            'febrero' => 0,
+            'marzo' => 0,
+            'abril' => 0,
+            'mayo' => 0,
+            'junio' => 0,
+        ];
+        
+        return $datos;
     }
 
     private function procesarDatosSeccion($conceptos, $filtros)
