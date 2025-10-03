@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/secciones/reparacion-muebles', [SeccionesController::class, 'reparacionMuebles'])->name('secciones.reparacion-muebles');
     Route::get('/secciones/mercadeo', [SeccionesController::class, 'mercadeo'])->name('secciones.mercadeo');
     Route::get('/api/secciones/movimientos', [SeccionesController::class, 'getMovimientosDetallado'])->name('api.secciones.movimientos');
+    Route::get('/api/secciones/movimientos-operativas', [SeccionesController::class, 'getMovimientosSeccionOperativa'])->name('api.secciones.movimientos-operativas');
     Route::get('/secciones/movimientos-detallado', [SeccionesController::class, 'getMovimientosDetallado'])->name('secciones.movimientos-detallado');
     Route::get('/presupuesto-secciones', [SeccionesController::class, 'presupuesto'])->name('presupuesto-secciones.index');
     Route::post('/presupuesto-secciones', [SeccionesController::class, 'storePresupuesto'])->name('presupuesto-secciones.store');

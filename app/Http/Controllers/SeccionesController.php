@@ -6,6 +6,7 @@ use App\Models\PresupuestoSeccion;
 use App\Models\CentroCostoSeccion;
 use App\Models\Movimiento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SeccionesController extends Controller
 {
@@ -763,32 +764,191 @@ class SeccionesController extends Controller
     }
 
     /**
-     * Función simplificada para secciones operativas
-     * Devuelve una sola fila con el nombre de la sección como concepto
+     * Obtiene los movimientos detallados de una sección operativa para un mes específico
+     */
+    public function getMovimientosSeccionOperativa(Request $request)
+    {
+        $seccion = $request->get('seccion');
+        $mes = $request->get('mes');
+        $year = $request->get('year');
+
+        // Obtener configuración de la sección
+        $configuracion = $this->getConfiguracionSecciones();
+        
+        if (!isset($configuracion[$seccion])) {
+            return response()->json(['error' => 'Sección no válida'], 400);
+        }
+
+        $centrosCosto = $configuracion[$seccion]['centros_costo'];
+
+        if (empty($centrosCosto)) {
+            return response()->json([
+                'movimientos' => [],
+                'total' => 0,
+                'seccion' => $seccion,
+                'mes' => $mes,
+                'year' => $year
+            ]);
+        }
+
+        $movimientos = Movimiento::whereYear('fecha', $year)
+            ->whereMonth('fecha', $mes)
+            ->whereIn('centro_costo', $centrosCosto)
+            ->select('fecha', 'documento', 'descripcion', 'valor', 'centro_costo', 'cuenta')
+            ->orderByDesc('fecha')
+            ->get();
+
+        // Calcular el total usando valores absolutos
+        $total = 0;
+        foreach ($movimientos as $mov) {
+            $total += abs($mov->valor);
+        }
+
+        return response()->json([
+            'movimientos' => $movimientos,
+            'total' => $total,
+            'seccion' => $seccion,
+            'mes' => $mes,
+            'year' => $year
+        ]);
+    }
+
+    /**
+     * Retorna la configuración de centros de costo para todas las secciones
+     */
+    private function getConfiguracionSecciones()
+    {
+        // Mapeo de secciones a centros de costo y presupuestos
+        // Datos extraídos de presupuesto.md (2025-2026) y centros decosto.md
+        return [
+            'ASEO Y CAFETERÍA' => [
+                'centros_costo' => ['11011001', '11011002'],
+                'presupuesto_aprobado' => 60000000
+            ],
+            'EQUIPO Y DOTACIÓN SALONES' => [
+                'centros_costo' => ['11010101', '11010102'],
+                'presupuesto_aprobado' => 18060210
+            ],
+            'DEPORTES' => [
+                'centros_costo' => ['130601', '130602', '130603', '130604', '130605'],
+                'presupuesto_aprobado' => 12613480
+            ],
+            'HONORARIOS' => [
+                'centros_costo' => ['010601'],
+                'presupuesto_aprobado' => 173054567
+            ],
+            'DOTACIONES' => [
+                'centros_costo' => ['130901', '130902', '130903', '130904'],
+                'presupuesto_aprobado' => 27352000
+            ],
+            'AGASAJOS' => [
+                'centros_costo' => ['110112'],
+                'presupuesto_aprobado' => 45867200
+            ],
+            'TECNOLOGÍA' => [
+                'centros_costo' => ['131901', '131902', '131903', '131904'],
+                'presupuesto_aprobado' => 68800800
+            ],
+            'GASTOS DE CONTRATACIÓN' => [
+                'centros_costo' => ['010507'],
+                'presupuesto_aprobado' => 5733400
+            ],
+            'AFILIACIONES Y SUSCRIPCIONES' => [
+                'centros_costo' => ['110113'],
+                'presupuesto_aprobado' => 68617032
+            ],
+            'IB' => [
+                'centros_costo' => ['130101', '130102', '130103', '130104', '130301', '130302', '130303', '130304', '130305'],
+                'presupuesto_aprobado' => 123082674
+            ],
+            'ENTRENAMIENTOS' => [
+                'centros_costo' => ['130201', '130202', '130203', '130204', '130205'],
+                'presupuesto_aprobado' => 41682742
+            ],
+            'SERVICIOS PÚBLICOS' => [
+                'centros_costo' => ['110301', '110302', '110303', '110304', '110305'],
+                'presupuesto_aprobado' => 496599910
+            ],
+            'REPARACIONES MAYORES' => [
+                'centros_costo' => ['11010201'],
+                'presupuesto_aprobado' => 182322120
+            ],
+            'REPARACIÓN DE MUEBLES' => [
+                'centros_costo' => ['11010203', '11010205'],
+                'presupuesto_aprobado' => 17200200
+            ],
+            'MERCADEO' => [
+                'centros_costo' => ['110114'],
+                'presupuesto_aprobado' => 78688901
+            ],
+        ];
+    }
+
+    /**
+     * Función simplificada para secciones operativas con datos dinámicos
+     * Devuelve una sola fila con el nombre de la sección como concepto y datos reales de la BD
      */
     private function procesarSeccionSimplificada($nombreSeccion)
     {
         $datos = [];
+        $configuracion = $this->getConfiguracionSecciones();
+        $config = $configuracion[$nombreSeccion] ?? ['centros_costo' => [], 'presupuesto_aprobado' => 0];
         
-        // Crear una sola fila con todos los valores en 0
-        $datos[$nombreSeccion] = [
-            'presupuesto_aprobado' => 0,
-            'ejecutado' => 0,
-            'presupuesto_por_ejecutar' => 0,
-            'porcentaje_restante' => 0,
-            'julio' => 0,
-            'agosto' => 0,
-            'septiembre' => 0,
-            'octubre' => 0,
-            'noviembre' => 0,
-            'diciembre' => 0,
-            'enero' => 0,
-            'febrero' => 0,
-            'marzo' => 0,
-            'abril' => 0,
-            'mayo' => 0,
-            'junio' => 0,
+        $centrosCosto = $config['centros_costo'];
+        $presupuestoAprobado = $config['presupuesto_aprobado'];
+        
+        // Definir meses y años
+        $currentYear = date('Y');
+        $nextYear = $currentYear + 1;
+        
+        $mesesConfig = [
+            'julio' => ['mes' => 7, 'year' => $currentYear],
+            'agosto' => ['mes' => 8, 'year' => $currentYear],
+            'septiembre' => ['mes' => 9, 'year' => $currentYear],
+            'octubre' => ['mes' => 10, 'year' => $currentYear],
+            'noviembre' => ['mes' => 11, 'year' => $currentYear],
+            'diciembre' => ['mes' => 12, 'year' => $currentYear],
+            'enero' => ['mes' => 1, 'year' => $nextYear],
+            'febrero' => ['mes' => 2, 'year' => $nextYear],
+            'marzo' => ['mes' => 3, 'year' => $nextYear],
+            'abril' => ['mes' => 4, 'year' => $nextYear],
+            'mayo' => ['mes' => 5, 'year' => $nextYear],
+            'junio' => ['mes' => 6, 'year' => $nextYear],
         ];
+        
+        // Calcular ejecutado por mes
+        $totalEjecutado = 0;
+        $mesesData = [];
+        
+        foreach ($mesesConfig as $nombreMes => $mesConfig) {
+            $valorMes = 0;
+            
+            if (!empty($centrosCosto)) {
+                $valorMes = DB::table('movimientos')
+                    ->whereYear('fecha', $mesConfig['year'])
+                    ->whereMonth('fecha', $mesConfig['mes'])
+                    ->whereIn('centro_costo', $centrosCosto)
+                    ->selectRaw('SUM(ABS(valor)) as total')
+                    ->value('total') ?? 0;
+            }
+            
+            $mesesData[$nombreMes] = $valorMes;
+            $totalEjecutado += $valorMes;
+        }
+        
+        // Calcular presupuesto por ejecutar y porcentaje restante
+        $presupuestoPorEjecutar = $presupuestoAprobado - $totalEjecutado;
+        $porcentajeRestante = $presupuestoAprobado > 0 
+            ? ($presupuestoPorEjecutar / $presupuestoAprobado) * 100 
+            : 0;
+        
+        // Construir la fila de datos
+        $datos[$nombreSeccion] = array_merge([
+            'presupuesto_aprobado' => $presupuestoAprobado,
+            'ejecutado' => $totalEjecutado,
+            'presupuesto_por_ejecutar' => $presupuestoPorEjecutar,
+            'porcentaje_restante' => $porcentajeRestante,
+        ], $mesesData);
         
         return $datos;
     }
