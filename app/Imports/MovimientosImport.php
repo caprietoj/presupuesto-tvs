@@ -69,7 +69,17 @@ class MovimientosImport implements ToCollection
 
     private function parseCurrency($value)
     {
-        if (!$value || trim($value) === '') return 0;
+        // Si el valor está vacío, retornar 0
+        if ($value === null || $value === '') return 0;
+        
+        // Si ya es un número (Excel lo retorna así), usarlo directamente
+        if (is_numeric($value)) {
+            return (float) $value;
+        }
+        
+        // Si es string, aplicar parseo
+        $value = trim($value);
+        if ($value === '') return 0;
 
         // Check if negative (starts with parenthesis)
         $isNegative = str_starts_with($value, '(');

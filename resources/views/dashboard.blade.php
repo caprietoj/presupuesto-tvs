@@ -103,7 +103,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong>TOTAL EGRESOS</strong></td>
-                                        <td class="number-cell">$14.104.459.233</td>
+                                        <td class="number-cell">${{ number_format($presupuestoEgresos, 0, ',', '.') }}</td>
                                         <td class="number-cell">${{ number_format($egresosPorMes['junio'], 0, ',', '.') }}</td>
                                         <td class="number-cell">${{ number_format($egresosPorMes['julio'], 0, ',', '.') }}</td>
                                         <td class="number-cell">${{ number_format($egresosPorMes['agosto'], 0, ',', '.') }}</td>
