@@ -61,13 +61,13 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'driver' => 'intranet',
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        // Provider local (si necesitas usuarios locales también)
+        // 'local_users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => env('AUTH_MODEL', App\Models\User::class),
         // ],
     ],
 

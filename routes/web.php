@@ -5,11 +5,16 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeccionesController;
+use App\Http\Controllers\AutologinController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/login');
 });
+
+// Rutas de autologin (sin middleware auth)
+Route::get('/autologin', [AutologinController::class, 'autologin'])->name('autologin');
+Route::post('/api/autologin/generate-token', [AutologinController::class, 'generateToken'])->name('autologin.generate');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard/ingreso-detalle', [DashboardController::class, 'getIngresoDetalle'])->middleware(['auth', 'verified'])->name('dashboard.ingreso-detalle');
