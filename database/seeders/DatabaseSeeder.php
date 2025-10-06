@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Este sistema usa autenticación desde intranet
+        // No se necesitan usuarios locales
+        
+        // Para poblar datos iniciales, ejecutar:
+        // php artisan db:seed --class=CentroCostoSeccionSeeder
+        
+        echo "DatabaseSeeder: No hay datos que poblar aquí." . PHP_EOL;
+        echo "Para datos iniciales, ejecuta: php artisan db:seed --class=CentroCostoSeccionSeeder" . PHP_EOL;
     }
 }
