@@ -8,6 +8,11 @@ use App\Http\Controllers\SeccionesController;
 use App\Http\Controllers\AutologinController;
 use Illuminate\Support\Facades\Route;
 
+// Deshabilitar completamente la ruta de registro - debe ir ANTES que cualquier otra ruta
+Route::any('register', function () {
+    abort(404);
+});
+
 Route::get('/', function () {
     return redirect('/login');
 });

@@ -1,0 +1,86 @@
+/* Estilos personalizados para la página de login */
+
+/* Color institucional */
+:root {
+    --color-institucional: #233e6c;
+    --color-institucional-hover: #1a2d4f;
+    --color-institucional-light: #2d4a7c;
+}
+
+/* Inputs con focus personalizado */
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--color-institucional) !important;
+    ring-color: var(--color-institucional) !important;
+    box-shadow: 0 0 0 3px rgba(35, 62, 108, 0.1) !important;
+}
+
+/* Checkbox personalizado */
+input[type="checkbox"]:checked {
+    background-color: var(--color-institucional) !important;
+    border-color: var(--color-institucional) !important;
+}
+
+input[type="checkbox"]:focus {
+    ring-color: var(--color-institucional) !important;
+    box-shadow: 0 0 0 3px rgba(35, 62, 108, 0.2) !important;
+}
+
+/* Botón de login hover */
+button[type="submit"]:hover {
+    background-color: var(--color-institucional-hover) !important;
+}
+
+button[type="submit"]:active {
+    transform: translateY(1px) !important;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Efecto de resplandor sutil en el logo */
+@keyframes pulse-subtle {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(35, 62, 108, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(35, 62, 108, 0);
+    }
+}
+
+.logo-container {
+    animation: pulse-subtle 3s infinite;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .max-w-md {
+        max-width: 95% !important;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+    .max-w-md {
+        max-width: 540px !important;
+    }
+}
+
+@media (min-width: 1025px) {
+    .max-w-md {
+        max-width: 580px !important;
+    }
+}
