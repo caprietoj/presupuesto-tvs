@@ -11,11 +11,90 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Custom Login Styles -->
-        <link href="{{ asset('css/login.css') }}" rel="stylesheet" />
+        <!-- Tailwind CSS CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            /* Estilos personalizados para login */
+            :root {
+                --color-institucional: #233e6c;
+                --color-institucional-hover: #1a2d4f;
+            }
+
+            body {
+                font-family: 'Figtree', sans-serif;
+            }
+
+            /* Inputs con focus personalizado */
+            input[type="email"]:focus,
+            input[type="password"]:focus {
+                outline: none;
+                border-color: var(--color-institucional) !important;
+                box-shadow: 0 0 0 3px rgba(35, 62, 108, 0.1) !important;
+            }
+
+            /* Checkbox personalizado */
+            input[type="checkbox"]:checked {
+                background-color: var(--color-institucional) !important;
+                border-color: var(--color-institucional) !important;
+            }
+
+            input[type="checkbox"]:focus {
+                box-shadow: 0 0 0 3px rgba(35, 62, 108, 0.2) !important;
+            }
+
+            /* Botón de login */
+            .btn-login {
+                background-color: var(--color-institucional);
+                transition: all 0.3s ease;
+            }
+
+            .btn-login:hover {
+                background-color: var(--color-institucional-hover);
+                transform: translateY(-1px);
+            }
+
+            .btn-login:active {
+                transform: translateY(1px);
+            }
+
+            /* Animación de entrada */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .fade-in-up {
+                animation: fadeInUp 0.5s ease-out;
+            }
+
+            /* Efecto de resplandor en el logo */
+            @keyframes pulse-subtle {
+                0%, 100% {
+                    box-shadow: 0 0 0 0 rgba(35, 62, 108, 0.4);
+                }
+                50% {
+                    box-shadow: 0 0 0 10px rgba(35, 62, 108, 0);
+                }
+            }
+
+            .logo-container {
+                animation: pulse-subtle 3s infinite;
+            }
+
+            /* Estilos del card */
+            .login-card {
+                background: white;
+                border-radius: 0.5rem;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            }
+        </style>
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex items-center justify-center px-4" style="background-color: #f8fafc;">
@@ -32,7 +111,7 @@
                 </div>
 
                 <!-- Card de login -->
-                <div>
+                <div class="login-card">
                     <div class="px-12 py-10">
                         {{ $slot }}
                     </div>
