@@ -21,25 +21,20 @@
                     </div>
 
                     <!-- Navegador de Tablas -->
+                    @if(count($seccionesDisponibles) > 1)
                     <div class="mb-6">
                         <label for="section-navigator" class="block text-sm font-medium text-gray-700 mb-2">Filtrar por sección:</label>
                         <select id="section-navigator" class="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Mostrar todas las secciones</option>
-                            <option value="preescolar">PREESCOLAR Y PRIMARIA</option>
-                            <option value="escuela-media">ESCUELA MEDIA</option>
-                            <option value="escuela-alta">ESCUELA ALTA</option>
-                            <option value="pai">PAI</option>
-                            <option value="pep">PEP</option>
-                            <option value="deportes">DEPORTES</option>
-                            <option value="biblioteca">BIBLIOTECA</option>
-                            <option value="psicologia">PSICOLOGÍA INSTITUCIONAL</option>
-                            <option value="cas">CAS</option>
-                            <option value="consejeria-universitaria">CONSEJERÍA UNIVERSITARIA</option>
-                            <option value="departamento-apoyo">DEPARTAMENTO DE APOYO</option>
+                            @foreach($seccionesDisponibles as $nombreSeccion => $idSeccion)
+                                <option value="{{ $idSeccion }}">{{ $nombreSeccion }}</option>
+                            @endforeach
                         </select>
                     </div>
+                    @endif
 
                     <!-- Tabla Preescolar y Primaria -->
+                    @if(isset($seccionesDisponibles['PREESCOLAR Y PRIMARIA']))
                     <div class="budget-section" id="preescolar-section">
                         <h5 id="table-preescolar" class="flex justify-between items-center">
                             <span>PREESCOLAR Y PRIMARIA</span>
@@ -138,8 +133,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla Escuela Media -->
+                    @if(isset($seccionesDisponibles['MEDIA']))
                     <div class="budget-section" id="escuela-media-section">
                         <h5 id="table-escuela-media" class="flex justify-between items-center">
                             <span>ESCUELA MEDIA</span>
@@ -250,8 +247,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla Escuela Alta -->
+                    @if(isset($seccionesDisponibles['ALTA']))
                     <div class="budget-section" id="escuela-alta-section">
                         <h5 id="table-escuela-alta" class="flex justify-between items-center">
                             <span>ESCUELA ALTA</span>
@@ -344,8 +343,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla PAI -->
+                    @if(isset($seccionesDisponibles['PAI']))
                     <div class="budget-section" id="pai-section">
                         <h5 id="table-pai" class="flex justify-between items-center">
                             <span>PAI</span>
@@ -396,8 +397,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla PEP -->
+                    @if(isset($seccionesDisponibles['PEP']))
                     <div class="budget-section" id="pep-section">
                         <h5 id="table-pep" class="flex justify-between items-center">
                             <span>PEP</span>
@@ -442,8 +445,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla Deportes -->
+                    @if(isset($seccionesDisponibles['DEPORTES ACADEMIA']))
                     <div class="budget-section" id="deportes-section">
                         <h5 id="table-deportes" class="flex justify-between items-center">
                             <span>DEPORTES</span>
@@ -494,8 +499,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla Biblioteca -->
+                    @if(isset($seccionesDisponibles['BIBLIOTECA']))
                     <div class="budget-section" id="biblioteca-section">
                         <h5 id="table-biblioteca" class="flex justify-between items-center">
                             <span>BIBLIOTECA</span>
@@ -528,8 +535,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla Psicología Institucional -->
+                    @if(isset($seccionesDisponibles['PSICOLOGIA INSTITUCIONAL']))
                     <div class="budget-section" id="psicologia-section">
                         <h5 id="table-psicologia" class="flex justify-between items-center">
                             <span>PSICOLOGÍA INSTITUCIONAL</span>
@@ -562,8 +571,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla CAS -->
+                    @if(isset($seccionesDisponibles['CAS']))
                     <div class="budget-section" id="cas-section">
                         <h5 id="table-cas" class="flex justify-between items-center">
                             <span>CAS</span>
@@ -596,8 +607,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla Consejería Universitaria -->
+                    @if(isset($seccionesDisponibles['CONSEJERIA UNIVERSITARIA']))
                     <div class="budget-section" id="consejeria-universitaria-section">
                         <h5 id="table-consejeria-universitaria" class="flex justify-between items-center">
                             <span>CONSEJERÍA UNIVERSITARIA</span>
@@ -630,8 +643,10 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                     <!-- Tabla Departamento de Apoyo -->
+                    @if(isset($seccionesDisponibles['DEPARTAMENTO DE APOYO']))
                     <div class="budget-section" id="departamento-apoyo-section">
                         <h5 id="table-departamento-apoyo" class="flex justify-between items-center">
                             <span>DEPARTAMENTO DE APOYO</span>
@@ -658,6 +673,7 @@
                             </table>
                         </div>
                     </div>
+                    @endif
 
                 </div>
             </div>

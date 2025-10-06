@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\UserPermission;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,7 +29,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Obtener permisos del usuario para determinar la ruta de redirección
+        $user = Auth::user();
+        $permission = UserPermission::findByEmail($user->email);
+
+        // Si el usuario tiene acceso solo a secciones, redirigir a secciones
+        // Si tiene acceso total, redirigir al dashboard
+        $intendedRoute = ($permission && $permission->access_type === 'secciones') 
+            ? route('secciones.index', absolute: false)
+            : route('dashboard', absolute: false);
+
+        return redirect()->intended($intendedRoute);
     }
 
     /**

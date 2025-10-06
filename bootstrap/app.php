@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/api/autologin/generate-token',
         ]);
+        
+        // Registrar middleware de verificación de acceso
+        $middleware->alias([
+            'check.access' => \App\Http\Middleware\CheckUserAccess::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\AutologinToken;
+use App\Models\UserPermission;
 
 class AutologinController extends Controller
 {
@@ -98,8 +99,16 @@ class AutologinController extends Controller
         // Autenticar usuario
         Auth::login($authUser, true); // true = remember me
 
-        // Redirigir al dashboard
-        return redirect()->intended(route('dashboard'))
+        // Obtener permisos del usuario para determinar la ruta de redirección
+        $permission = UserPermission::findByEmail($user->email);
+
+        // Si el usuario tiene acceso solo a secciones, redirigir a secciones
+        // Si tiene acceso total, redirigir al dashboard
+        $redirectRoute = ($permission && $permission->access_type === 'secciones') 
+            ? route('secciones.index')
+            : route('dashboard');
+
+        return redirect()->intended($redirectRoute)
             ->with('success', '¡Bienvenido ' . $user->name . '!');
     }
 }

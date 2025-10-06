@@ -12,16 +12,50 @@ class SeccionesController extends Controller
 {
     public function index()
     {
-        return view('secciones.index');
+        // Obtener permisos del usuario
+        $userPermissions = session('user_permissions');
+        
+        // Definir mapeo de secciones a sus IDs HTML
+        $seccionesDisponibles = [
+            'PREESCOLAR Y PRIMARIA' => 'preescolar',
+            'MEDIA' => 'escuela-media',
+            'ALTA' => 'escuela-alta',
+            'PAI' => 'pai',
+            'PEP' => 'pep',
+            'DEPORTES ACADEMIA' => 'deportes',
+            'BIBLIOTECA' => 'biblioteca',
+            'PSICOLOGIA INSTITUCIONAL' => 'psicologia',
+            'CAS' => 'cas',
+            'CONSEJERIA UNIVERSITARIA' => 'consejeria-universitaria',
+            'DEPARTAMENTO DE APOYO' => 'departamento-apoyo',
+        ];
+        
+        // Filtrar secciones según permisos
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            $allowedSections = $userPermissions->getAllowedSections();
+            // Filtrar solo las secciones permitidas
+            $seccionesDisponibles = array_filter($seccionesDisponibles, function($key) use ($allowedSections) {
+                return in_array($key, $allowedSections);
+            }, ARRAY_FILTER_USE_KEY);
+        }
+        
+        return view('secciones.index', compact('seccionesDisponibles', 'userPermissions'));
     }
 
     public function detallado()
     {
         // Obtener todas las secciones únicas de la configuración
-        $secciones = CentroCostoSeccion::select('seccion')
-            ->distinct()
-            ->orderBy('seccion')
-            ->pluck('seccion');
+        $query = CentroCostoSeccion::select('seccion')
+            ->distinct();
+        
+        // Filtrar por permisos si el usuario tiene acceso por secciones
+        $userPermissions = session('user_permissions');
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            $allowedSections = $userPermissions->getAllowedSections();
+            $query->whereIn('seccion', $allowedSections);
+        }
+        
+        $secciones = $query->orderBy('seccion')->pluck('seccion');
 
         return view('secciones.detallado', compact('secciones'));
     }
@@ -107,12 +141,29 @@ class SeccionesController extends Controller
 
     public function presupuesto()
     {
-        $presupuestos = PresupuestoSeccion::all();
+        // Filtrar presupuestos según permisos del usuario
+        $userPermissions = session('user_permissions');
+        
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            // Usuario con acceso por secciones - filtrar
+            $allowedSections = $userPermissions->getAllowedSections();
+            $presupuestos = PresupuestoSeccion::whereIn('seccion', $allowedSections)->get();
+        } else {
+            // Usuario con acceso total - ver todo
+            $presupuestos = PresupuestoSeccion::all();
+        }
         
         // Obtener todas las secciones únicas desde la configuración
-        $secciones = CentroCostoSeccion::select('seccion')
-            ->distinct()
-            ->orderBy('seccion')
+        $seccionesQuery = CentroCostoSeccion::select('seccion')
+            ->distinct();
+        
+        // Filtrar secciones del dropdown según permisos
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            $allowedSections = $userPermissions->getAllowedSections();
+            $seccionesQuery->whereIn('seccion', $allowedSections);
+        }
+        
+        $secciones = $seccionesQuery->orderBy('seccion')
             ->pluck('seccion', 'seccion')
             ->toArray();
         
@@ -121,7 +172,13 @@ class SeccionesController extends Controller
             'DEPARTAMENTO DE APOYO' => 'DEPARTAMENTO DE APOYO'
         ];
         
-        $secciones = array_merge($secciones, $seccionesAdicionales);
+        // Solo agregar secciones adicionales si el usuario tiene permiso
+        if (!$userPermissions || $userPermissions->access_type === 'total') {
+            $secciones = array_merge($secciones, $seccionesAdicionales);
+        } elseif (in_array('DEPARTAMENTO DE APOYO', $userPermissions->getAllowedSections())) {
+            $secciones = array_merge($secciones, $seccionesAdicionales);
+        }
+        
         ksort($secciones); // Ordenar alfabéticamente
         
         return view('secciones.presupuesto', compact('presupuestos', 'secciones'));
@@ -177,7 +234,16 @@ class SeccionesController extends Controller
 
     public function getPresupuestos()
     {
-        $presupuestos = PresupuestoSeccion::all();
+        // Filtrar presupuestos según permisos del usuario
+        $userPermissions = session('user_permissions');
+        
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            $allowedSections = $userPermissions->getAllowedSections();
+            $presupuestos = PresupuestoSeccion::whereIn('seccion', $allowedSections)->get();
+        } else {
+            $presupuestos = PresupuestoSeccion::all();
+        }
+        
         $data = [];
         
         // Mapeo de nombres de secciones de base de datos a nombres de frontend

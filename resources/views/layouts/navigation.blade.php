@@ -83,15 +83,22 @@
         <!-- Menu Principal Desplegable -->
         <div :class="{'block': menuOpen, 'hidden': ! menuOpen}" class="hidden border-t border-[#1e2d42] bg-white shadow-xl rounded-b-lg mt-1">
             <div class="px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
-                <!-- Dashboard -->
+                @php
+                    $userPermissions = session('user_permissions');
+                    $hasTotalAccess = !$userPermissions || $userPermissions->access_type === 'total';
+                @endphp
+
+                <!-- Dashboard - Solo para usuarios con acceso total -->
+                @if($hasTotalAccess)
                 <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('dashboard') ? 'bg-[#e8eef5] text-[#2a3d5d] font-semibold' : '' }}">
                     <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     {{ __('Dashboard Presupuesto') }}
                 </a>
+                @endif
 
-                <!-- Resumen Secciones -->
+                <!-- Resumen Secciones - Todos pueden ver -->
                 <a href="{{ route('secciones.index') }}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.index') ? 'bg-[#e8eef5] text-[#2a3d5d] font-semibold' : '' }}">
                     <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -99,14 +106,18 @@
                     {{ __('Resumen Secciones') }}
                 </a>
 
+                <!-- Detallado Secciones - Solo para acceso total -->
+                @if($hasTotalAccess)
                 <a href="{{ route('secciones.detallado') }}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.detallado') ? 'bg-[#e8eef5] text-[#2a3d5d] font-semibold' : '' }}">
                     <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     {{ __('Detallado Secciones') }}
                 </a>
+                @endif
 
-                <!-- Secciones Operativas -->
+                <!-- Secciones Operativas - Solo para acceso total -->
+                @if($hasTotalAccess)
                 <div class="border-t border-gray-200 pt-2 mt-2">
                     <button @click="seccionesOperativasOpen = ! seccionesOperativasOpen" class="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
                         <div class="flex items-center">
@@ -167,8 +178,10 @@
                         </a>
                     </div>
                 </div>
+                @endif
                 
-                <!-- Configuraciones Section -->
+                <!-- Configuraciones Section - Solo para acceso total -->
+                @if($hasTotalAccess)
                 <div class="border-t border-gray-200 pt-2 mt-2">
                     <button @click="configuracionesOpen = ! configuracionesOpen" class="flex items-center justify-between w-full px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
                         <div class="flex items-center">
@@ -203,6 +216,7 @@
                         </a>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -210,17 +224,32 @@
     <!-- Responsive Navigation Menu (Mobile) -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white border-t border-gray-200">
         <div class="pt-2 pb-3 space-y-1 px-2">
+            @php
+                $userPermissions = session('user_permissions');
+                $hasTotalAccess = !$userPermissions || $userPermissions->access_type === 'total';
+            @endphp
+
+            <!-- Dashboard - Solo para acceso total -->
+            @if($hasTotalAccess)
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @endif
+
+            <!-- Resumen Secciones - Todos -->
             <x-responsive-nav-link :href="route('secciones.index')" :active="request()->routeIs('secciones.index')">
                 {{ __('Resumen Secciones') }}
             </x-responsive-nav-link>
+
+            <!-- Detallado Secciones - Solo para acceso total -->
+            @if($hasTotalAccess)
             <x-responsive-nav-link :href="route('secciones.detallado')" :active="request()->routeIs('secciones.detallado')">
                 {{ __('Detallado Secciones') }}
             </x-responsive-nav-link>
+            @endif
 
-            <!-- Secciones Operativas Mobile -->
+            <!-- Secciones Operativas Mobile - Solo para acceso total -->
+            @if($hasTotalAccess)
             <div class="border-t border-gray-200 pt-2 mt-2">
                 <div class="px-4 py-2">
                     <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Secciones Operativas</div>
@@ -271,8 +300,10 @@
                     {{ __('Honorarios') }}
                 </x-responsive-nav-link>
             </div>
+            @endif
             
-            <!-- Configuraciones Mobile -->
+            <!-- Configuraciones Mobile - Solo para acceso total -->
+            @if($hasTotalAccess)
             <div class="border-t border-gray-200 pt-2 mt-2">
                 <div class="px-4 py-2">
                     <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Configuraciones</div>
@@ -287,6 +318,7 @@
                     {{ __('Centro de Costo') }}
                 </x-responsive-nav-link>
             </div>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

@@ -16,23 +16,23 @@ Route::get('/', function () {
 Route::get('/autologin', [AutologinController::class, 'autologin'])->name('autologin');
 Route::post('/api/autologin/generate-token', [AutologinController::class, 'generateToken'])->name('autologin.generate');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/dashboard/ingreso-detalle', [DashboardController::class, 'getIngresoDetalle'])->middleware(['auth', 'verified'])->name('dashboard.ingreso-detalle');
-Route::get('/dashboard/seccion-detalle', [DashboardController::class, 'getSeccionDetalle'])->middleware(['auth', 'verified'])->name('dashboard.seccion-detalle');
-Route::get('/dashboard/otro-escolar-detalle', [DashboardController::class, 'getOtroEscolarDetalle'])->middleware(['auth', 'verified'])->name('dashboard.otro-escolar-detalle');
-Route::get('/dashboard/salario-detalle', [DashboardController::class, 'getSalarioDetalle'])->middleware(['auth', 'verified'])->name('dashboard.salario-detalle');
-Route::get('/dashboard/salario-administracion-detalle', [DashboardController::class, 'getSalarioAdministracionDetalle'])->middleware(['auth', 'verified'])->name('dashboard.salario-administracion-detalle');
-Route::get('/dashboard/rubro-institucional-detalle', [DashboardController::class, 'getRubroInstitucionalDetalle'])->middleware(['auth', 'verified'])->name('dashboard.rubro-institucional-detalle');
-Route::get('/dashboard/membresia-convenio-detalle', [DashboardController::class, 'getMembresiaConvenioDetalle'])->middleware(['auth', 'verified'])->name('dashboard.membresia-convenio-detalle');
-Route::get('/dashboard/servicio-publico-detalle', [DashboardController::class, 'getServicioPublicoDetalle'])->name('dashboard.servicio-publico-detalle');
-Route::get('/dashboard/seccion-academia-detalle', [DashboardController::class, 'getSeccionAcademiaDetalle'])->name('dashboard.seccion-academia-detalle');
-Route::get('/dashboard/contrato-externo-detalle', [DashboardController::class, 'getContratoExternoDetalle'])->name('dashboard.contrato-externo-detalle');
-Route::get('/dashboard/otro-egreso-detalle', [DashboardController::class, 'getOtroEgresoDetalle'])->name('dashboard.otro-egreso-detalle');
-Route::get('/dashboard/utilidad-cafeteria-detalle', [DashboardController::class, 'getUtilidadCafeteriaDetalle'])->middleware(['auth', 'verified'])->name('dashboard.utilidad-cafeteria-detalle');
-Route::get('/dashboard/utilidad-transporte-detalle', [DashboardController::class, 'getUtilidadTransporteDetalle'])->middleware(['auth', 'verified'])->name('dashboard.utilidad-transporte-detalle');
-Route::get('/dashboard/actividades-curriculares-detalle', [DashboardController::class, 'getActividadesCurricularesDetalle'])->middleware(['auth', 'verified'])->name('dashboard.actividades-curriculares-detalle');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'check.access'])->name('dashboard');
+Route::get('/dashboard/ingreso-detalle', [DashboardController::class, 'getIngresoDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.ingreso-detalle');
+Route::get('/dashboard/seccion-detalle', [DashboardController::class, 'getSeccionDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.seccion-detalle');
+Route::get('/dashboard/otro-escolar-detalle', [DashboardController::class, 'getOtroEscolarDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.otro-escolar-detalle');
+Route::get('/dashboard/salario-detalle', [DashboardController::class, 'getSalarioDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.salario-detalle');
+Route::get('/dashboard/salario-administracion-detalle', [DashboardController::class, 'getSalarioAdministracionDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.salario-administracion-detalle');
+Route::get('/dashboard/rubro-institucional-detalle', [DashboardController::class, 'getRubroInstitucionalDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.rubro-institucional-detalle');
+Route::get('/dashboard/membresia-convenio-detalle', [DashboardController::class, 'getMembresiaConvenioDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.membresia-convenio-detalle');
+Route::get('/dashboard/servicio-publico-detalle', [DashboardController::class, 'getServicioPublicoDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.servicio-publico-detalle');
+Route::get('/dashboard/seccion-academia-detalle', [DashboardController::class, 'getSeccionAcademiaDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.seccion-academia-detalle');
+Route::get('/dashboard/contrato-externo-detalle', [DashboardController::class, 'getContratoExternoDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.contrato-externo-detalle');
+Route::get('/dashboard/otro-egreso-detalle', [DashboardController::class, 'getOtroEgresoDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.otro-egreso-detalle');
+Route::get('/dashboard/utilidad-cafeteria-detalle', [DashboardController::class, 'getUtilidadCafeteriaDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.utilidad-cafeteria-detalle');
+Route::get('/dashboard/utilidad-transporte-detalle', [DashboardController::class, 'getUtilidadTransporteDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.utilidad-transporte-detalle');
+Route::get('/dashboard/actividades-curriculares-detalle', [DashboardController::class, 'getActividadesCurricularesDetalle'])->middleware(['auth', 'check.access'])->name('dashboard.actividades-curriculares-detalle');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check.access'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
