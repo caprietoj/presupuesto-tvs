@@ -17,6 +17,25 @@
                         </div>
                     @endif
 
+                    <!-- Mensajes de error -->
+                    @if(session('error'))
+                        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <!-- Errores de validación -->
+                    @if($errors->any())
+                        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            <strong>¡Error!</strong>
+                            <ul class="mt-2 list-disc list-inside">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <!-- Contenido principal -->
                     <div class="text-center mb-8">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">
@@ -52,7 +71,8 @@
                                 
                                 <div>
                                     <label for="presupuesto_aprobado" class="block text-sm font-medium text-gray-700">Presupuesto Aprobado (COP)</label>
-                                    <input type="number" name="presupuesto_aprobado" id="presupuesto_aprobado" step="0.01" min="0" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="0.00">
+                                    <input type="number" name="presupuesto_aprobado" id="presupuesto_aprobado" step="1" min="0" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Ejemplo: 38000000 (sin puntos ni comas)">
+                                    <p class="mt-1 text-xs text-gray-500">Ingrese el valor completo sin separadores. Ej: 38000000 para $38.000.000</p>
                                     @error('presupuesto_aprobado')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -143,6 +163,8 @@
                     @csrf
                     @method('PUT')
                     
+                    <input type="hidden" name="seccion" id="editSeccion">
+                    
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Sección</label>
                         <input type="text" id="editSeccionDisplay" disabled class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100">
@@ -150,7 +172,8 @@
                     
                     <div class="mb-4">
                         <label for="editPresupuesto" class="block text-sm font-medium text-gray-700">Presupuesto Aprobado (COP)</label>
-                        <input type="number" name="presupuesto_aprobado" id="editPresupuesto" step="0.01" min="0" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="number" name="presupuesto_aprobado" id="editPresupuesto" step="1" min="0" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <p class="mt-1 text-xs text-gray-500">Ingrese el valor completo sin separadores. Ej: 38000000 para $38.000.000</p>
                     </div>
                     
                     <div class="mb-4">
@@ -176,6 +199,7 @@
         
         function editPresupuesto(id, seccion, presupuesto, descripcion) {
             document.getElementById('editForm').action = `/presupuesto-secciones/${id}`;
+            document.getElementById('editSeccion').value = seccion;
             document.getElementById('editSeccionDisplay').value = secciones[seccion] || seccion;
             document.getElementById('editPresupuesto').value = presupuesto;
             document.getElementById('editDescripcion').value = descripcion || '';

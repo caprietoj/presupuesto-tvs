@@ -819,6 +819,7 @@
             fetch('/api/presupuestos-secciones')
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Presupuestos recibidos:', data);
                     // Mapeo de secciones
                     const mapeoSecciones = {
                         'preescolar': 'table-preescolar',

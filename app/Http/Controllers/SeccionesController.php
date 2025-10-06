@@ -108,21 +108,46 @@ class SeccionesController extends Controller
     public function presupuesto()
     {
         $presupuestos = PresupuestoSeccion::all();
-        return view('secciones.presupuesto', compact('presupuestos'));
+        
+        // Obtener todas las secciones únicas desde la configuración
+        $secciones = CentroCostoSeccion::select('seccion')
+            ->distinct()
+            ->orderBy('seccion')
+            ->pluck('seccion', 'seccion')
+            ->toArray();
+        
+        // Agregar secciones adicionales que existen en la vista pero no en centro_costo_seccions
+        $seccionesAdicionales = [
+            'DEPARTAMENTO DE APOYO' => 'DEPARTAMENTO DE APOYO'
+        ];
+        
+        $secciones = array_merge($secciones, $seccionesAdicionales);
+        ksort($secciones); // Ordenar alfabéticamente
+        
+        return view('secciones.presupuesto', compact('presupuestos', 'secciones'));
     }
 
     public function storePresupuesto(Request $request)
     {
-        $request->validate([
-            'seccion' => 'required|string|max:255|unique:presupuesto_seccions,seccion',
-            'presupuesto_aprobado' => 'required|numeric|min:0',
-            'descripcion' => 'nullable|string'
-        ]);
+        try {
+            $validated = $request->validate([
+                'seccion' => 'required|string|max:255|unique:presupuesto_secciones,seccion',
+                'presupuesto_aprobado' => 'required|numeric|min:0',
+                'descripcion' => 'nullable|string'
+            ]);
 
-        PresupuestoSeccion::create($request->all());
+            PresupuestoSeccion::create([
+                'seccion' => $validated['seccion'],
+                'presupuesto_aprobado' => $validated['presupuesto_aprobado'],
+                'descripcion' => $validated['descripcion'] ?? null
+            ]);
 
-        return redirect()->route('presupuesto-secciones.index')
-                        ->with('success', 'Presupuesto de sección creado exitosamente.');
+            return redirect()->route('presupuesto-secciones.index')
+                            ->with('success', 'Presupuesto de sección creado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('presupuesto-secciones.index')
+                            ->with('error', 'Error al crear el presupuesto: ' . $e->getMessage());
+        }
     }
 
     public function updatePresupuesto(Request $request, $id)
@@ -130,7 +155,7 @@ class SeccionesController extends Controller
         $presupuesto = PresupuestoSeccion::findOrFail($id);
         
         $request->validate([
-            'seccion' => 'required|string|max:255|unique:presupuesto_seccions,seccion,' . $id,
+            'seccion' => 'required|string|max:255|unique:presupuesto_secciones,seccion,' . $id,
             'presupuesto_aprobado' => 'required|numeric|min:0',
             'descripcion' => 'nullable|string'
         ]);
@@ -155,8 +180,26 @@ class SeccionesController extends Controller
         $presupuestos = PresupuestoSeccion::all();
         $data = [];
         
+        // Mapeo de nombres de secciones de base de datos a nombres de frontend
+        $mapeoSecciones = [
+            'PREESCOLAR Y PRIMARIA' => 'preescolar',
+            'MEDIA' => 'escuela-media',
+            'ALTA' => 'escuela-alta',
+            'PAI' => 'pai',
+            'PEP' => 'pep',
+            'DEPORTES ACADEMIA' => 'deportes',
+            'BIBLIOTECA' => 'biblioteca',
+            'PSICOLOGIA INSTITUCIONAL' => 'psicologia',
+            'CAS' => 'cas',
+            'CONSEJERIA UNIVERSITARIA' => 'consejeria-universitaria',
+            'DEPARTAMENTO DE APOYO' => 'departamento-apoyo',
+            // Agregar más mapeos según sea necesario
+        ];
+        
         foreach ($presupuestos as $presupuesto) {
-            $data[$presupuesto->seccion] = $presupuesto->presupuesto_aprobado;
+            $nombreSeccion = strtoupper(trim($presupuesto->seccion));
+            $claveSeccion = $mapeoSecciones[$nombreSeccion] ?? strtolower(str_replace(' ', '-', $nombreSeccion));
+            $data[$claveSeccion] = $presupuesto->presupuesto_aprobado;
         }
         
         return response()->json($data);
