@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\PresupuestoSeccion;
 use App\Models\CentroCostoSeccion;
 use App\Models\Movimiento;
+use App\Models\ReclasificacionLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class SeccionesController extends Controller
 {
@@ -46,7 +48,7 @@ class SeccionesController extends Controller
     {
         // Obtener todas las secciones únicas de la configuración
         $query = CentroCostoSeccion::select('seccion')
-            ->distinct();
+            ->distinct();   
         
         // Filtrar por permisos si el usuario tiene acceso por secciones
         $userPermissions = session('user_permissions');
@@ -113,6 +115,7 @@ class SeccionesController extends Controller
             $configuracion = CentroCostoSeccion::where('centro_costo', $movimiento->centro_costo)->first();
             
             return [
+                'id' => $movimiento->id, // ID para reclasificación
                 'fuente' => $movimiento->fuente ?? '',
                 'documento' => $movimiento->documento ?? '',
                 'fecha' => $movimiento->fecha ? date('d/m/Y', strtotime($movimiento->fecha)) : '',
@@ -1118,5 +1121,235 @@ class SeccionesController extends Controller
         }
 
         return $datos;
+    }
+
+    /**
+     * Reclasificar un movimiento cambiando su centro de costo
+     * Esto efectivamente mueve el gasto de una sección/rubro a otra
+     */
+    public function reclasificarMovimiento(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'movimiento_id' => 'required|integer',
+                'nuevo_centro_costo' => 'required|string|max:10'
+            ]);
+
+            // Buscar el movimiento
+            $movimiento = Movimiento::find($validated['movimiento_id']);
+            
+            if (!$movimiento) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Movimiento no encontrado'
+                ], 404);
+            }
+
+            // Verificar que el nuevo centro de costo existe en la configuración
+            $nuevaConfig = CentroCostoSeccion::where('centro_costo', $validated['nuevo_centro_costo'])->first();
+            
+            if (!$nuevaConfig) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El centro de costo destino no está configurado en el sistema'
+                ], 400);
+            }
+
+            // Obtener configuración anterior para el log
+            $configAnterior = CentroCostoSeccion::where('centro_costo', $movimiento->centro_costo)->first();
+
+            $centroCostoAnterior = $movimiento->centro_costo;
+            $seccionAnterior = $configAnterior ? $configAnterior->seccion : 'Sin configurar';
+            $rubroAnterior = $configAnterior ? $configAnterior->rubro : 'Sin configurar';
+
+            // Actualizar el centro de costo del movimiento
+            $movimiento->centro_costo = $validated['nuevo_centro_costo'];
+            $movimiento->save();
+
+            // Registrar el log de reclasificación
+            ReclasificacionLog::create([
+                'movimiento_id' => $movimiento->id,
+                'usuario' => Auth::user()->name ?? 'Sistema',
+                'centro_costo_anterior' => $centroCostoAnterior,
+                'centro_costo_nuevo' => $validated['nuevo_centro_costo'],
+                'seccion_anterior' => $seccionAnterior,
+                'seccion_nueva' => $nuevaConfig->seccion,
+                'rubro_anterior' => $rubroAnterior,
+                'rubro_nuevo' => $nuevaConfig->rubro,
+                'valor' => $movimiento->valor,
+                'descripcion_movimiento' => $movimiento->descripcion ?? null,
+                'revertido' => false // Explícitamente false al crear
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Movimiento reclasificado exitosamente',
+                'data' => [
+                    'movimiento_id' => $movimiento->id,
+                    'centro_costo_anterior' => $centroCostoAnterior,
+                    'seccion_anterior' => $seccionAnterior,
+                    'rubro_anterior' => $rubroAnterior,
+                    'centro_costo_nuevo' => $validated['nuevo_centro_costo'],
+                    'seccion_nueva' => $nuevaConfig->seccion,
+                    'rubro_nuevo' => $nuevaConfig->rubro,
+                    'valor' => $movimiento->valor
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al reclasificar: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Obtener lista de centros de costo disponibles para reclasificación
+     */
+    public function getCentrosCostoDisponibles()
+    {
+        $centrosCosto = CentroCostoSeccion::select('centro_costo', 'rubro', 'seccion')
+            ->orderBy('seccion')
+            ->orderBy('rubro')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'centros_costo' => $centrosCosto
+        ]);
+    }
+
+    /**
+     * Vista de control de cambios (auditoría de reclasificaciones)
+     */
+    public function controlCambios(Request $request)
+    {
+        $query = ReclasificacionLog::query()->orderBy('created_at', 'desc');
+
+        // Filtros opcionales
+        if ($request->has('usuario') && $request->usuario) {
+            $query->where('usuario', 'LIKE', '%' . $request->usuario . '%');
+        }
+
+        if ($request->has('seccion') && $request->seccion) {
+            $query->where(function($q) use ($request) {
+                $q->where('seccion_anterior', 'LIKE', '%' . $request->seccion . '%')
+                  ->orWhere('seccion_nueva', 'LIKE', '%' . $request->seccion . '%');
+            });
+        }
+
+        if ($request->has('revertido')) {
+            $query->where('revertido', $request->revertido === 'true' || $request->revertido === '1');
+        }
+
+        if ($request->has('fecha_desde') && $request->fecha_desde) {
+            $query->whereDate('created_at', '>=', $request->fecha_desde);
+        }
+
+        if ($request->has('fecha_hasta') && $request->fecha_hasta) {
+            $query->whereDate('created_at', '<=', $request->fecha_hasta);
+        }
+
+        // Paginación
+        $logs = $query->paginate(15);
+
+        // Obtener usuarios únicos para el filtro
+        $usuarios = ReclasificacionLog::select('usuario')
+            ->distinct()
+            ->orderBy('usuario')
+            ->pluck('usuario');
+
+        // Obtener secciones únicas
+        $secciones = CentroCostoSeccion::select('seccion')
+            ->distinct()
+            ->orderBy('seccion')
+            ->pluck('seccion');
+
+        return view('control-cambios.index', compact('logs', 'usuarios', 'secciones'));
+    }
+
+    /**
+     * Revertir una reclasificación
+     */
+    public function revertirReclasificacion($id)
+    {
+        try {
+            $log = ReclasificacionLog::findOrFail($id);
+
+            // Verificar que no esté ya revertida
+            if ($log->revertido) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Esta reclasificación ya fue revertida anteriormente'
+                ], 400);
+            }
+
+            // Buscar el movimiento
+            $movimiento = Movimiento::find($log->movimiento_id);
+
+            if (!$movimiento) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El movimiento ya no existe en el sistema'
+                ], 404);
+            }
+
+            // Verificar que el movimiento esté en el centro de costo nuevo (no reclasificado de nuevo)
+            if ($movimiento->centro_costo !== $log->centro_costo_nuevo) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El movimiento ha sido reclasificado nuevamente. No se puede revertir.'
+                ], 400);
+            }
+
+            // Revertir: volver al centro de costo anterior
+            $movimiento->centro_costo = $log->centro_costo_anterior;
+            $movimiento->save();
+
+            // Marcar el log como revertido
+            $log->revertido = true;
+            $log->fecha_reversion = now();
+            $log->usuario_reversion = Auth::user()->name ?? 'Sistema';
+            $log->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Reclasificación revertida exitosamente',
+                'data' => [
+                    'movimiento_id' => $movimiento->id,
+                    'centro_costo_restaurado' => $log->centro_costo_anterior,
+                    'seccion_restaurada' => $log->seccion_anterior,
+                    'rubro_restaurado' => $log->rubro_anterior
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al revertir: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Obtener detalles de un log de reclasificación
+     */
+    public function getDetalleLog($id)
+    {
+        try {
+            $log = ReclasificacionLog::with('movimiento')->findOrFail($id);
+
+            return response()->json([
+                'success' => true,
+                'log' => $log
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener detalles: ' . $e->getMessage()
+            ], 404);
+        }
     }
 }

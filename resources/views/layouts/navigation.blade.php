@@ -214,6 +214,12 @@
                             </svg>
                             {{ __('Centro de Costo Secciones') }}
                         </a>
+                        <a href="{{ route('control-cambios.index') }}" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('control-cambios.*') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {{ __('Control de Cambios') }}
+                        </a>
                     </div>
                 </div>
                 @endif
@@ -316,6 +322,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('centro-costo-secciones.index')" :active="request()->routeIs('centro-costo-secciones.*')">
                     {{ __('Centro de Costo') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('control-cambios.index')" :active="request()->routeIs('control-cambios.*')">
+                    {{ __('Control de Cambios') }}
                 </x-responsive-nav-link>
             </div>
             @endif

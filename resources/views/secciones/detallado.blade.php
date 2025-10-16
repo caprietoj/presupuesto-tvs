@@ -73,12 +73,13 @@
                                         <th>Nombre Tercero</th>
                                         <th id="col-auxiliar" class="columna-condicional">Auxiliar</th>
                                         <th>Centro Costo</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="detallado-tbody">
                                     <!-- Los datos se cargarán aquí dinámicamente -->
                                     <tr>
-                                        <td colspan="15" class="text-center py-8 text-gray-500">
+                                        <td colspan="16" class="text-center py-8 text-gray-500">
                                             Cargando datos...
                                         </td>
                                     </tr>
@@ -142,6 +143,84 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Reclasificar Movimiento -->
+    <div id="reclasificar-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">🔄 Reclasificar Movimiento</h3>
+                <button class="modal-close" onclick="cerrarModalReclasificar()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Información del movimiento actual -->
+                <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; margin-bottom: 1.5rem; border-radius: 6px;">
+                    <h4 style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem;">📋 Movimiento Actual</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <p><strong>Centro de Costo:</strong> <span id="reclass-centro-actual"></span></p>
+                        <p><strong>Valor:</strong> <span id="reclass-valor"></span></p>
+                        <p><strong>Sección:</strong> <span id="reclass-seccion-actual"></span></p>
+                        <p><strong>Rubro:</strong> <span id="reclass-rubro-actual"></span></p>
+                    </div>
+                    <p class="mt-2"><strong>Descripción:</strong> <span id="reclass-descripcion"></span></p>
+                </div>
+
+                <!-- Formulario de reclasificación -->
+                <form id="form-reclasificar" onsubmit="confirmarReclasificacion(event)">
+                    <input type="hidden" id="reclass-movimiento-id">
+                    
+                    <div class="mb-4">
+                        <label for="reclass-buscar" class="block text-sm font-medium text-gray-700 mb-2">
+                            🔍 Buscar Centro de Costo Destino
+                        </label>
+                        <input type="text" 
+                               id="reclass-buscar" 
+                               class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                               placeholder="Buscar por centro, sección o rubro..."
+                               oninput="filtrarCentrosCosto()"
+                               autocomplete="off">
+                        <!-- Contador de resultados -->
+                        <div id="contador-resultados" 
+                             style="margin-top: 0.5rem; padding: 0.5rem; background-color: #f3f4f6; border-radius: 4px; font-size: 0.875rem; display: none;">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="reclass-centro-nuevo" class="block text-sm font-medium text-gray-700 mb-2">
+                            📍 Seleccionar Centro de Costo Destino <span class="text-red-500">*</span>
+                        </label>
+                        <select id="reclass-centro-nuevo" 
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                required
+                                onchange="mostrarInfoDestino()">
+                            <option value="">Seleccione un centro de costo...</option>
+                        </select>
+                    </div>
+
+                    <!-- Información del destino -->
+                    <div id="info-destino" style="background-color: #d1fae5; border-left: 4px solid #10b981; padding: 1rem; margin-bottom: 1.5rem; border-radius: 6px; display: none;">
+                        <h4 style="font-weight: 600; color: #065f46; margin-bottom: 0.5rem;">✅ Destino Seleccionado</h4>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <p><strong>Centro de Costo:</strong> <span id="destino-centro"></span></p>
+                            <p><strong>Sección:</strong> <span id="destino-seccion"></span></p>
+                            <p colspan="2"><strong>Rubro:</strong> <span id="destino-rubro"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 mt-6">
+                        <button type="button" 
+                                onclick="cerrarModalReclasificar()" 
+                                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 font-medium">
+                            Cancelar
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">
+                            🔄 Reclasificar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -264,9 +343,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
             animation: fadeIn 0.3s ease-in-out;
+            overflow-y: auto;
+            padding: 2rem 0;
         }
 
         .modal-overlay.show {
@@ -275,17 +356,25 @@
             justify-content: center;
         }
 
+        /* Cuando se usa style="display: flex" directamente */
+        .modal-overlay[style*="display: flex"] {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
         .modal-content {
             background: white;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 2rem;
-            max-width: 90%;
-            max-height: 90%;
+            width: 90%;
+            max-width: 650px;
+            max-height: 85vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideIn 0.3s ease-in-out;
-            min-width: 600px;
+            margin: auto;
         }
 
         .modal-header {
@@ -321,8 +410,88 @@
         }
 
         .modal-body {
-            max-height: 400px;
+            max-height: calc(85vh - 140px);
             overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        /* Estilos para el scrollbar del modal */
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Estilos para botones de acción */
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-reclasificar {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-reclasificar:hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+        }
+
+        .action-cell {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* Estilos para el campo de búsqueda con feedback */
+        #reclass-buscar {
+            transition: all 0.3s;
+        }
+
+        #reclass-buscar:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        #contador-resultados {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        /* Estilos para el select con mejoras visuales */
+        #reclass-centro-nuevo {
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+
+        #reclass-centro-nuevo:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        #reclass-centro-nuevo option {
+            padding: 0.5rem;
         }
 
         .loading-spinner {
@@ -369,10 +538,34 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Responsive para pantallas pequeñas */
         @media (max-width: 768px) {
             .modal-content {
-                min-width: 95%;
+                width: 95%;
+                max-width: 95%;
+                padding: 1.5rem 1rem;
+                max-height: 90vh;
+            }
+
+            .modal-overlay {
+                padding: 1rem 0;
+            }
+
+            .modal-body {
+                max-height: calc(90vh - 120px);
+            }
+        }
+
+        /* Responsive para pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 98%;
                 padding: 1rem;
+                border-radius: 8px;
+            }
+
+            .modal-title {
+                font-size: 1.25rem;
             }
         }
 
@@ -521,6 +714,13 @@
                     <td>${registro.nombreTercero || ''}</td>
                     <td class="celda-auxiliar ${tieneAuxiliar ? '' : 'oculta'}">${registro.auxiliar || ''}</td>
                     <td>${registro.centroCosto || ''}</td>
+                    <td class="action-cell">
+                        <button class="btn-action btn-reclasificar" 
+                                onclick="abrirModalReclasificar(${index})"
+                                title="Reclasificar este movimiento">
+                            🔄 Reclasificar
+                        </button>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -530,28 +730,64 @@
             const inicio = totalRegistros > 0 ? ((paginaActual - 1) * registrosPorPagina) + 1 : 0;
             const fin = Math.min(paginaActual * registrosPorPagina, totalRegistros);
             
+            console.log('Actualizando paginación:', {
+                totalRegistros,
+                totalPaginas,
+                paginaActual,
+                registrosPorPagina
+            });
+            
             document.getElementById('total-registros').textContent = `Total de registros: ${totalRegistros}`;
             document.getElementById('registros-inicio').textContent = inicio;
             document.getElementById('registros-fin').textContent = fin;
             document.getElementById('total-registros-bottom').textContent = totalRegistros;
-            document.getElementById('pagina-actual').textContent = paginaActual;
+            document.getElementById('pagina-actual').textContent = `${paginaActual} de ${totalPaginas}`;
             
-            document.getElementById('btn-anterior').disabled = paginaActual <= 1;
-            document.getElementById('btn-siguiente').disabled = paginaActual >= totalPaginas || totalPaginas === 0;
+            // Habilitar/deshabilitar botones
+            const btnAnterior = document.getElementById('btn-anterior');
+            const btnSiguiente = document.getElementById('btn-siguiente');
+            
+            btnAnterior.disabled = paginaActual <= 1;
+            btnSiguiente.disabled = paginaActual >= totalPaginas || totalPaginas === 0;
+            
+            // Agregar estilos visuales adicionales
+            if (btnAnterior.disabled) {
+                btnAnterior.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                btnAnterior.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            if (btnSiguiente.disabled) {
+                btnSiguiente.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                btnSiguiente.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
         }
 
         function cambiarPagina(direccion) {
             const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina);
             
+            console.log('Cambiar página:', {
+                direccion,
+                paginaActual,
+                totalPaginas,
+                totalRegistros
+            });
+            
             if (direccion === 'anterior' && paginaActual > 1) {
                 paginaActual--;
             } else if (direccion === 'siguiente' && paginaActual < totalPaginas) {
                 paginaActual++;
+            } else {
+                console.log('No se puede cambiar de página');
+                return; // No hacer nada si no se puede cambiar
             }
             
             // Obtener filtros actuales sin resetear la página
             const seccion = document.getElementById('filter-seccion').value;
             const centroCosto = document.getElementById('filter-centro-costo').value;
+            
+            console.log('Cargando página:', paginaActual);
             
             // Cargar datos con la nueva página
             cargarDatos(seccion, '', centroCosto);
@@ -607,12 +843,26 @@
                 ...(centroCosto && { centro_costo: centroCosto })
             });
 
+            console.log('Cargando datos con params:', {
+                pagina: paginaActual,
+                seccion,
+                rubro,
+                centroCosto
+            });
+
             // Mostrar estado de carga en la tabla
             mostrarCargando();
 
             fetch(`/secciones/movimientos-detallado?${params}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Datos recibidos:', {
+                        cantidadDatos: data.datos.length,
+                        totalRegistros: data.totalRegistros,
+                        pagina: data.pagina,
+                        registrosPorPagina: data.registrosPorPagina
+                    });
+                    
                     datosCompletos = data.datos;
                     totalRegistros = data.totalRegistros;
                     mostrarDatos();
@@ -723,6 +973,281 @@
             if (e.target === this) {
                 cerrarModal();
             }
+        });
+
+        // =====================================================
+        // FUNCIONES DE RECLASIFICACIÓN
+        // =====================================================
+        
+        let centrosCostoDisponibles = [];
+        let centrosCostoFiltrados = [];
+        let movimientoActual = null;
+        let busquedaTimeout = null;
+
+        // Cargar centros de costo disponibles
+        async function cargarCentrosCosto() {
+            try {
+                const response = await fetch('/api/secciones/centros-costo-disponibles');
+                const data = await response.json();
+                
+                if (data.success) {
+                    centrosCostoDisponibles = data.centros_costo;
+                    centrosCostoFiltrados = [...centrosCostoDisponibles];
+                }
+            } catch (error) {
+                console.error('Error al cargar centros de costo:', error);
+            }
+        }
+
+        // Abrir modal de reclasificación
+        function abrirModalReclasificar(index) {
+            movimientoActual = datosCompletos[index];
+            
+            if (!movimientoActual.id) {
+                alert('Error: No se puede reclasificar este movimiento (ID no disponible)');
+                return;
+            }
+
+            // Llenar información del movimiento actual
+            document.getElementById('reclass-movimiento-id').value = movimientoActual.id;
+            document.getElementById('reclass-centro-actual').textContent = movimientoActual.centroCosto || 'N/A';
+            document.getElementById('reclass-seccion-actual').textContent = movimientoActual.seccion || 'N/A';
+            document.getElementById('reclass-rubro-actual').textContent = movimientoActual.rubro || 'N/A';
+            document.getElementById('reclass-descripcion').textContent = movimientoActual.descripcion || 'N/A';
+            
+            const valor = parseFloat(movimientoActual.valor) || 0;
+            document.getElementById('reclass-valor').textContent = '$' + new Intl.NumberFormat('es-CO').format(Math.abs(valor));
+            
+            // Cargar centros de costo si no están cargados
+            if (centrosCostoDisponibles.length === 0) {
+                cargarCentrosCosto().then(() => {
+                    poblarSelectCentrosCosto();
+                    actualizarContadorResultados(''); // Mostrar contador inicial
+                });
+            } else {
+                poblarSelectCentrosCosto();
+                actualizarContadorResultados(''); // Mostrar contador inicial
+            }
+            
+            // Limpiar y ocultar info de destino
+            document.getElementById('info-destino').style.display = 'none';
+            document.getElementById('reclass-buscar').value = '';
+            
+            // Mostrar modal
+            document.getElementById('reclasificar-modal').style.display = 'flex';
+        }
+
+        // Poblar select con centros de costo
+        function poblarSelectCentrosCosto() {
+            const select = document.getElementById('reclass-centro-nuevo');
+            const busqueda = document.getElementById('reclass-buscar').value.toLowerCase().trim();
+            
+            // Filtrar el centro de costo actual
+            const centrosParaMostrar = centrosCostoFiltrados.filter(
+                cc => cc.centro_costo !== movimientoActual.centroCosto
+            );
+            
+            // Mensaje inicial dependiendo si hay búsqueda activa
+            if (centrosParaMostrar.length === 0) {
+                if (busqueda) {
+                    select.innerHTML = '<option value="">❌ No se encontraron coincidencias</option>';
+                } else {
+                    select.innerHTML = '<option value="">Seleccione un centro de costo...</option>';
+                }
+            } else {
+                const textoOpcionInicial = busqueda 
+                    ? `✅ ${centrosParaMostrar.length} coincidencia${centrosParaMostrar.length !== 1 ? 's' : ''} - Seleccione una opción...`
+                    : `Seleccione un centro de costo (${centrosParaMostrar.length} disponibles)...`;
+                
+                select.innerHTML = `<option value="">${textoOpcionInicial}</option>`;
+                
+                centrosParaMostrar.forEach(cc => {
+                    const option = document.createElement('option');
+                    option.value = cc.centro_costo;
+                    
+                    // Si hay búsqueda, resaltar visualmente la primera coincidencia encontrada
+                    let textoOpcion = `${cc.centro_costo} - ${cc.seccion} | ${cc.rubro}`;
+                    
+                    // Agregar emoji de estrella si coincide exactamente con el centro de costo buscado
+                    if (busqueda && cc.centro_costo.toLowerCase() === busqueda) {
+                        textoOpcion = `⭐ ${textoOpcion}`;
+                    }
+                    
+                    option.textContent = textoOpcion;
+                    option.dataset.seccion = cc.seccion;
+                    option.dataset.rubro = cc.rubro;
+                    select.appendChild(option);
+                });
+                
+                // Si solo hay una coincidencia y hay búsqueda activa, sugerir seleccionarla
+                if (centrosParaMostrar.length === 1 && busqueda) {
+                    select.selectedIndex = 1; // Seleccionar automáticamente la única opción
+                    mostrarInfoDestino(); // Mostrar info de destino automáticamente
+                }
+            }
+            
+            // Resetear selección e info de destino cuando hay múltiples opciones
+            if (centrosParaMostrar.length !== 1 || !busqueda) {
+                if (select.selectedIndex !== 0) {
+                    select.selectedIndex = 0;
+                    document.getElementById('info-destino').style.display = 'none';
+                }
+            }
+        }
+
+        // Filtrar centros de costo por búsqueda (actualización en tiempo real)
+        function filtrarCentrosCosto() {
+            // Limpiar timeout anterior si existe
+            if (busquedaTimeout) {
+                clearTimeout(busquedaTimeout);
+            }
+            
+            // Pequeño delay para evitar filtrar en cada tecla (mejora rendimiento)
+            busquedaTimeout = setTimeout(() => {
+                const busqueda = document.getElementById('reclass-buscar').value.toLowerCase().trim();
+                
+                if (!busqueda) {
+                    centrosCostoFiltrados = [...centrosCostoDisponibles];
+                } else {
+                    centrosCostoFiltrados = centrosCostoDisponibles.filter(cc => 
+                        cc.centro_costo.toLowerCase().includes(busqueda) ||
+                        cc.seccion.toLowerCase().includes(busqueda) ||
+                        cc.rubro.toLowerCase().includes(busqueda)
+                    );
+                }
+                
+                // Actualizar el select automáticamente
+                poblarSelectCentrosCosto();
+                
+                // Mostrar contador de resultados
+                actualizarContadorResultados(busqueda);
+            }, 150); // Delay de 150ms para suavizar la búsqueda
+        }
+
+        // Actualizar contador de resultados
+        function actualizarContadorResultados(busqueda) {
+            const contador = document.getElementById('contador-resultados');
+            if (!contador) return;
+            
+            const total = centrosCostoDisponibles.length - 1; // -1 por el centro actual
+            const filtrados = centrosCostoFiltrados.filter(
+                cc => cc.centro_costo !== movimientoActual.centroCosto
+            ).length;
+            
+            if (busqueda) {
+                if (filtrados === 0) {
+                    contador.innerHTML = `<span style="color: #dc2626;">❌ No se encontraron coincidencias para "<strong>${busqueda}</strong>"</span>`;
+                    contador.style.display = 'block';
+                } else if (filtrados === 1) {
+                    contador.innerHTML = `<span style="color: #059669;">✅ Se encontró <strong>1 coincidencia</strong></span>`;
+                    contador.style.display = 'block';
+                } else {
+                    contador.innerHTML = `<span style="color: #059669;">✅ Se encontraron <strong>${filtrados} coincidencias</strong> de ${total} centros disponibles</span>`;
+                    contador.style.display = 'block';
+                }
+            } else {
+                contador.innerHTML = `<span style="color: #6b7280;">💡 <strong>${total}</strong> centros de costo disponibles. Comience a escribir para buscar...</span>`;
+                contador.style.display = 'block';
+            }
+        }
+
+        // Mostrar información del destino seleccionado
+        function mostrarInfoDestino() {
+            const select = document.getElementById('reclass-centro-nuevo');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (select.value) {
+                document.getElementById('destino-centro').textContent = select.value;
+                document.getElementById('destino-seccion').textContent = selectedOption.dataset.seccion;
+                document.getElementById('destino-rubro').textContent = selectedOption.dataset.rubro;
+                document.getElementById('info-destino').style.display = 'block';
+            } else {
+                document.getElementById('info-destino').style.display = 'none';
+            }
+        }
+
+        // Confirmar reclasificación
+        async function confirmarReclasificacion(event) {
+            event.preventDefault();
+            
+            const movimientoId = document.getElementById('reclass-movimiento-id').value;
+            const nuevoCentroCosto = document.getElementById('reclass-centro-nuevo').value;
+            
+            if (!nuevoCentroCosto) {
+                alert('Por favor seleccione un centro de costo destino');
+                return;
+            }
+            
+            // Confirmar acción
+            const selectedOption = document.getElementById('reclass-centro-nuevo').options[document.getElementById('reclass-centro-nuevo').selectedIndex];
+            const mensaje = `¿Está seguro de reclasificar este movimiento?\n\n` +
+                          `De: ${movimientoActual.centroCosto} - ${movimientoActual.seccion}\n` +
+                          `A: ${nuevoCentroCosto} - ${selectedOption.dataset.seccion}\n\n` +
+                          `Valor: $${new Intl.NumberFormat('es-CO').format(Math.abs(parseFloat(movimientoActual.valor) || 0))}`;
+            
+            if (!confirm(mensaje)) {
+                return;
+            }
+            
+            // Mostrar loading
+            const btnSubmit = event.target.querySelector('button[type="submit"]');
+            const textoOriginal = btnSubmit.innerHTML;
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<div class="loading"></div> Procesando...';
+            
+            try {
+                const response = await fetch('/api/secciones/reclasificar-movimiento', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        movimiento_id: parseInt(movimientoId),
+                        nuevo_centro_costo: nuevoCentroCosto
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ Movimiento reclasificado exitosamente!\n\n' +
+                          `El gasto de $${new Intl.NumberFormat('es-CO').format(Math.abs(data.data.valor))} fue movido de:\n` +
+                          `${data.data.seccion_anterior} (${data.data.rubro_anterior})\n\n` +
+                          `A:\n${data.data.seccion_nueva} (${data.data.rubro_nuevo})`);
+                    
+                    cerrarModalReclasificar();
+                    cargarDatos(); // Recargar datos para reflejar el cambio
+                } else {
+                    alert('❌ Error al reclasificar: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error al procesar la solicitud: ' + error.message);
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = textoOriginal;
+            }
+        }
+
+        // Cerrar modal de reclasificación
+        function cerrarModalReclasificar() {
+            document.getElementById('reclasificar-modal').style.display = 'none';
+            document.getElementById('form-reclasificar').reset();
+            document.getElementById('info-destino').style.display = 'none';
+            movimientoActual = null;
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        document.getElementById('reclasificar-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModalReclasificar();
+            }
+        });
+
+        // Cargar centros de costo al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarCentrosCosto();
         });
     </script>
 </x-app-layout>

@@ -77,8 +77,17 @@ Route::middleware(['auth', 'check.access'])->group(function () {
     Route::get('/api/secciones/ejecucion-biblioteca', [SeccionesController::class, 'getEjecucionBiblioteca'])->name('api.secciones.ejecucion-biblioteca');
     Route::get('/api/secciones/ejecucion-psicologia', [SeccionesController::class, 'getEjecucionPsicologia'])->name('api.secciones.ejecucion-psicologia');
     Route::get('/api/secciones/ejecucion-cas', [SeccionesController::class, 'getEjecucionCas']);
-Route::get('/api/secciones/ejecucion-consejeria-universitaria', [SeccionesController::class, 'getEjecucionConsejeriaUniversitaria']);
-Route::get('/api/secciones/ejecucion-pai', [SeccionesController::class, 'getEjecucionPai']);
+    Route::get('/api/secciones/ejecucion-consejeria-universitaria', [SeccionesController::class, 'getEjecucionConsejeriaUniversitaria']);
+    
+    // Rutas para reclasificación de movimientos
+    Route::post('/api/secciones/reclasificar-movimiento', [SeccionesController::class, 'reclasificarMovimiento'])->name('api.secciones.reclasificar');
+    Route::get('/api/secciones/centros-costo-disponibles', [SeccionesController::class, 'getCentrosCostoDisponibles'])->name('api.secciones.centros-disponibles');
+    Route::get('/api/secciones/ejecucion-pai', [SeccionesController::class, 'getEjecucionPai']);
+    
+    // Control de Cambios - Auditoría de Reclasificaciones
+    Route::get('/control-cambios', [SeccionesController::class, 'controlCambios'])->name('control-cambios.index');
+    Route::post('/control-cambios/revertir/{id}', [SeccionesController::class, 'revertirReclasificacion'])->name('control-cambios.revertir');
+    Route::get('/control-cambios/detalle/{id}', [SeccionesController::class, 'getDetalleLog'])->name('control-cambios.detalle');
     
     // Centro de Costo Secciones
     Route::get('/centro-costo-secciones', [CentroCostoSeccionController::class, 'index'])->name('centro-costo-secciones.index');
