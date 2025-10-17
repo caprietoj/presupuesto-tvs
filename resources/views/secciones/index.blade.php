@@ -45,7 +45,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -53,79 +52,66 @@
                                 <tbody id="preescolar-tbody">
                                     <tr>
                                         <td>Capacitación</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Capacitación" data-type="presupuesto" data-value="0">$0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Capacitación" data-type="ejecucion" data-value="0">$0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Importado</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Material Importado" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Material Importado" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Deportivo</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Material Deportivo" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Material Deportivo" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Musicales</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Musicales" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Musicales" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Part time teacher - reemplazos</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Part time teacher - reemplazos" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Part time teacher - reemplazos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Apoyo Institucional</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Apoyo Institucional" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Apoyo Institucional" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Eventos Académicos y Sociales</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Eventos Académicos y Sociales" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Eventos Académicos y Sociales" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Insumos Tecnológicos</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Insumos Tecnológicos" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Insumos Tecnológicos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Salidas Académicas Sección</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Salidas Académicas Sección" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Salidas Académicas Sección" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Alimentación</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Alimentación" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Alimentación" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Transporte</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Transporte" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Transporte" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Insumos de la Sección / Material para Clase</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Insumos de la Sección / Material para Clase" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Insumos de la Sección / Material para Clase" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -147,7 +133,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -155,91 +140,76 @@
                                 <tbody id="escuela-media-tbody">
                                     <tr>
                                         <td>Capacitación</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Capacitación" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Capacitación" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Importado</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Material Importado" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Material Importado" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Deportivo</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Material Deportivo" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Material Deportivo" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Musicales</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Musicales" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Musicales" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Part time teacher - reemplazos</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Part time teacher - reemplazos" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Part time teacher - reemplazos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Proyecto Comunitario</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Proyecto Comunitario" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Proyecto Comunitario" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>MUN TVS - Otros Colegios - GLY</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="MUN TVS - Otros Colegios - GLY" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="MUN TVS - Otros Colegios - GLY" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Apoyo Institucional</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Apoyo Institucional" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Apoyo Institucional" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Eventos Académicos y Sociales</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Eventos Académicos y Sociales" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Eventos Académicos y Sociales" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Insumos Tecnológicos</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Insumos Tecnológicos" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Insumos Tecnológicos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Salidas Académicas Sección</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Salidas Académicas Sección" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Salidas Académicas Sección" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Alimentación</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Alimentación" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Alimentación" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Transporte</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Transporte" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Transporte" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Insumos de la Sección / Material para Clase</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Insumos de la Sección / Material para Clase" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Insumos de la Sección / Material para Clase" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -261,7 +231,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -269,73 +238,61 @@
                                 <tbody id="escuela-alta-tbody">
                                     <tr>
                                         <td>Capacitación</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Capacitación" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Capacitación" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Importado</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Material Importado" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Material Importado" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Deportivo</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Material Deportivo" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Material Deportivo" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Musicales</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Musicales" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Musicales" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Part time teacher - reemplazos</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Part time teacher - reemplazos" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Part time teacher - reemplazos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Monografía</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Monografía" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Monografía" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>MUN TVS - Otros Colegios - GLY</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="MUN TVS - Otros Colegios - GLY" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="MUN TVS - Otros Colegios - GLY" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Preparación Pruebas Saber</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Preparación Pruebas Saber" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Preparación Pruebas Saber" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Eventos Académicos y Sociales</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Eventos Académicos y Sociales" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Eventos Académicos y Sociales" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Insumos Tecnológicos</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Insumos Tecnológicos" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Insumos Tecnológicos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Insumos de la Sección / Material para Clase</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="Insumos de la Sección / Material para Clase" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Insumos de la Sección / Material para Clase" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -357,7 +314,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -365,31 +321,26 @@
                                 <tbody id="pai-tbody">
                                     <tr>
                                         <td>Capacitación</td>
-                                        <td class="number-cell editable" data-section="pai" data-concept="Capacitación" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="pai" data-concept="Capacitación" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Importado</td>
-                                        <td class="number-cell editable" data-section="pai" data-concept="Material Importado" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="pai" data-concept="Material Importado" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Proyecto Comunitario</td>
-                                        <td class="number-cell editable" data-section="pai" data-concept="Proyecto Comunitario" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="pai" data-concept="Proyecto Comunitario" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Proyecto Personal</td>
-                                        <td class="number-cell editable" data-section="pai" data-concept="Proyecto Personal" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="pai" data-concept="Proyecto Personal" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -411,7 +362,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -419,25 +369,21 @@
                                 <tbody id="pep-tbody">
                                     <tr>
                                         <td>Capacitación</td>
-                                        <td class="number-cell editable" data-section="pep" data-concept="Capacitación" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="pep" data-concept="Capacitación" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Material Importado</td>
-                                        <td class="number-cell editable" data-section="pep" data-concept="Material Importado" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="pep" data-concept="Material Importado" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Exhibición PEP</td>
-                                        <td class="number-cell editable" data-section="pep" data-concept="Exhibición PEP" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="pep" data-concept="Exhibición PEP" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -459,7 +405,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -467,31 +412,26 @@
                                 <tbody id="deportes-tbody">
                                     <tr>
                                         <td>Dotación - Deportes</td>
-                                        <td class="number-cell editable" data-section="deportes" data-concept="Dotación - Deportes" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="deportes" data-concept="Dotación - Deportes" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Transporte</td>
-                                        <td class="number-cell editable" data-section="deportes" data-concept="Transporte" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="deportes" data-concept="Transporte" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Alimentación</td>
-                                        <td class="number-cell editable" data-section="deportes" data-concept="Alimentación" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="deportes" data-concept="Alimentación" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
                                         <td>Participación en Eventos</td>
-                                        <td class="number-cell editable" data-section="deportes" data-concept="Participación en Eventos" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="deportes" data-concept="Participación en Eventos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -513,7 +453,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -521,49 +460,11 @@
                                 <tbody id="biblioteca-tbody">
                                     <tr>
                                         <td>Biblioteca Institucional</td>
-                                        <td class="number-cell editable" data-section="biblioteca" data-concept="Biblioteca Institucional" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="biblioteca" data-concept="Biblioteca Institucional" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
-                                        <td class="number-cell total-ejecucion">0</td>
-                                        <td class="number-cell total-saldo positive">0</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    @endif
-
-                    <!-- Tabla Psicología Institucional -->
-                    @if(isset($seccionesDisponibles['PSICOLOGIA INSTITUCIONAL']))
-                    <div class="budget-section" id="psicologia-section">
-                        <h5 id="table-psicologia" class="flex justify-between items-center">
-                            <span>PSICOLOGÍA INSTITUCIONAL</span>
-                            <span class="text-sm font-normal text-gray-600">Presupuesto Aprobado:</span>
-                        </h5>
-                        <div class="table-wrapper">
-                            <table id="psicologia-table" class="data-table budget-table">
-                                <thead>
-                                    <tr>
-                                        <th>Concepto</th>
-                                        <th>Presupuesto</th>
-                                        <th>Ejecución</th>
-                                        <th>Saldo por ejecutar</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="psicologia-tbody">
-                                    <tr>
-                                        <td>Psicología Institucional</td>
-                                        <td class="number-cell editable" data-section="psicologia" data-concept="Psicología Institucional" data-type="presupuesto">0</td>
-                                        <td class="number-cell editable" data-section="psicologia" data-concept="Psicología Institucional" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
-                                    </tr>
-                                    <tr class="total-row">
-                                        <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -585,7 +486,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -593,13 +493,11 @@
                                 <tbody id="cas-tbody">
                                     <tr>
                                         <td>Actividades CAS</td>
-                                        <td class="number-cell editable" data-section="cas" data-concept="Actividades CAS" data-type="presupuesto">0</td>
                                         <td class="number-cell editable" data-section="cas" data-concept="Actividades CAS" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated positive">0</td>
+                                        <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -621,7 +519,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -629,13 +526,11 @@
                                 <tbody id="consejeria-universitaria-tbody">
                                     <tr>
                                         <td>Orientación Universitaria</td>
-                                        <td class="number-cell">0</td>
                                         <td class="number-cell clickable-value" data-type="ejecucion" data-concepto="Orientación Universitaria" data-seccion="consejeria-universitaria">0</td>
-                                        <td class="number-cell positive">0</td>
+                                        <td class="number-cell">-</td>
                                     </tr>
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -657,7 +552,6 @@
                                 <thead>
                                     <tr>
                                         <th>Concepto</th>
-                                        <th>Presupuesto</th>
                                         <th>Ejecución</th>
                                         <th>Saldo por ejecutar</th>
                                     </tr>
@@ -665,7 +559,6 @@
                                 <tbody id="departamento-apoyo-tbody">
                                     <tr class="total-row">
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="number-cell total-presupuesto">0</td>
                                         <td class="number-cell total-ejecucion">0</td>
                                         <td class="number-cell total-saldo positive">0</td>
                                     </tr>
@@ -861,6 +754,9 @@
                             const presupuesto = data[seccion];
                             
                             if (spanPresupuesto) {
+                                // Guardar presupuesto en atributo data para cálculos
+                                spanPresupuesto.setAttribute('data-presupuesto', presupuesto || 0);
+                                
                                 if (presupuesto && presupuesto > 0) {
                                     const presupuestoFormateado = '$' + new Intl.NumberFormat('es-CO').format(presupuesto);
                                     spanPresupuesto.textContent = `Presupuesto Aprobado: ${presupuestoFormateado}`;
@@ -1565,64 +1461,21 @@
         // Hacer la función accesible globalmente para uso desde otras páginas
         window.recargarPresupuestos = recargarPresupuestos;
 
-        // Función para distribuir el presupuesto entre los items de una tabla
+        // Función obsoleta - Ya no se distribuye presupuesto entre items individuales
+        // Se mantiene por compatibilidad pero no hace nada
         function distribuirPresupuestoEnTabla(seccion, presupuestoTotal) {
             const tbody = document.getElementById(seccion + '-tbody');
             if (!tbody) return;
             
-            // Obtener todas las filas que no sean la fila total
-            const filas = tbody.querySelectorAll('tr:not(.total-row)');
-            const numeroItems = filas.length;
-            
-            if (numeroItems === 0) return;
-            
-            // Calcular presupuesto por item
-            const presupuestoPorItem = presupuestoTotal > 0 ? Math.floor(presupuestoTotal / numeroItems) : 0;
-            let presupuestoRestante = presupuestoTotal - (presupuestoPorItem * numeroItems);
-            
-            // Asignar presupuesto a cada item
-            filas.forEach((fila, index) => {
-                const celdaPresupuesto = fila.querySelector('td.number-cell[data-type="presupuesto"]');
-                if (celdaPresupuesto) {
-                    let presupuestoParaItem = presupuestoPorItem;
-                    
-                    // Agregar el resto al último item para que el total coincida exactamente
-                    if (index === numeroItems - 1) {
-                        presupuestoParaItem += presupuestoRestante;
-                    }
-                    
-                    const presupuestoFormateado = presupuestoParaItem > 0 ? '$' + new Intl.NumberFormat('es-CO').format(presupuestoParaItem) : '$0';
-                    celdaPresupuesto.textContent = presupuestoFormateado;
-                    // Actualizar el atributo data para mantener consistencia
-                    celdaPresupuesto.setAttribute('data-value', presupuestoParaItem);
-                }
-                
-                // Recalcular el saldo (presupuesto - ejecución)
-                recalcularSaldoFila(fila);
-            });
-            
-            // Actualizar fila total
+            // Solo actualizar fila total
             actualizarFilaTotal(tbody, seccion);
         }
 
-        // Función para recalcular el saldo de una fila
+        // Función obsoleta - Los saldos individuales ahora muestran "-"
+        // Se mantiene por compatibilidad pero no hace nada
         function recalcularSaldoFila(fila) {
-            const celdaPresupuesto = fila.querySelector('td.number-cell[data-type="presupuesto"]');
-            const celdaEjecucion = fila.querySelector('td.number-cell[data-type="ejecucion"]');
-            const celdaSaldo = fila.querySelector('td.number-cell.calculated');
-            
-            if (celdaPresupuesto && celdaEjecucion && celdaSaldo) {
-                const presupuesto = parseFloat(celdaPresupuesto.getAttribute('data-value') || '0');
-                const ejecucion = parseFloat(celdaEjecucion.getAttribute('data-value') || '0');
-                const saldo = presupuesto - ejecucion;
-                
-                const saldoFormateado = '$' + new Intl.NumberFormat('es-CO').format(Math.abs(saldo));
-                celdaSaldo.textContent = saldoFormateado;
-                
-                // Actualizar clases según el signo del saldo
-                celdaSaldo.classList.remove('positive', 'negative');
-                celdaSaldo.classList.add(saldo >= 0 ? 'positive' : 'negative');
-            }
+            // Las celdas de saldo individuales ahora muestran "-" estáticamente
+            // Solo se calcula el saldo en la fila total
         }
 
         // Función para actualizar la fila total
@@ -1632,31 +1485,24 @@
             
             if (!filaTotalRow) return;
             
-            let totalPresupuesto = 0;
             let totalEjecucion = 0;
             
             filas.forEach(fila => {
-                const celdaPresupuesto = fila.querySelector('td.number-cell[data-type="presupuesto"]');
                 const celdaEjecucion = fila.querySelector('td.number-cell[data-type="ejecucion"]');
                 
-                if (celdaPresupuesto) {
-                    totalPresupuesto += parseFloat(celdaPresupuesto.getAttribute('data-value') || '0');
-                }
                 if (celdaEjecucion) {
                     totalEjecucion += parseFloat(celdaEjecucion.getAttribute('data-value') || '0');
                 }
             });
             
-            const totalSaldo = totalPresupuesto - totalEjecucion;
+            // Obtener presupuesto aprobado de la sección
+            const presupuestoAprobado = parseFloat(tbody.closest('.budget-section').querySelector('h5 span:last-child').getAttribute('data-presupuesto') || '0');
+            const totalSaldo = presupuestoAprobado - totalEjecucion;
             
             // Actualizar celdas de totales
-            const celdaTotalPresupuesto = filaTotalRow.querySelector('td.total-presupuesto');
             const celdaTotalEjecucion = filaTotalRow.querySelector('td.total-ejecucion');
             const celdaTotalSaldo = filaTotalRow.querySelector('td.total-saldo');
             
-            if (celdaTotalPresupuesto) {
-                celdaTotalPresupuesto.textContent = '$' + new Intl.NumberFormat('es-CO').format(totalPresupuesto);
-            }
             if (celdaTotalEjecucion) {
                 celdaTotalEjecucion.textContent = '$' + new Intl.NumberFormat('es-CO').format(totalEjecucion);
             }
@@ -1696,16 +1542,19 @@
                 }
             });
 
-            // Inicializar todas las celdas calculadas
+            // Inicializar todas las celdas calculadas (saldo por ejecutar)
+            // Las celdas calculadas ahora muestran "-" para filas individuales
+            // Solo las filas totales muestran valores calculados
             const celdasCalculadas = document.querySelectorAll('td.number-cell.calculated');
             celdasCalculadas.forEach(celda => {
-                if (!celda.textContent.includes('$')) {
-                    celda.textContent = '$0';
+                // Mantener el "-" que ya está en el HTML, no reemplazar
+                if (celda.textContent.trim() !== '-' && !celda.textContent.includes('$')) {
+                    celda.textContent = '-';
                 }
             });
 
             // Inicializar celdas de totales
-            const celdasTotales = document.querySelectorAll('td.number-cell.total-presupuesto, td.number-cell.total-ejecucion, td.number-cell.total-saldo');
+            const celdasTotales = document.querySelectorAll('td.number-cell.total-ejecucion, td.number-cell.total-saldo');
             celdasTotales.forEach(celda => {
                 if (!celda.textContent.includes('$')) {
                     celda.textContent = '$0';

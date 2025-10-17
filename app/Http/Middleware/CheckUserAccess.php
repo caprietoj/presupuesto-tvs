@@ -43,11 +43,8 @@ class CheckUserAccess
                     ->with('info', 'Ha sido redirigido a la vista de secciones según sus permisos.');
             }
             
-            // Bloquear Detallado Secciones
-            if ($request->is('secciones/detallado*')) {
-                return redirect()->route('secciones.index')
-                    ->with('info', 'No tiene permiso para acceder a esta vista.');
-            }
+            // NOTA: Detallado Secciones ahora está permitido para usuarios con acceso por secciones
+            // El controlador filtra automáticamente para mostrar solo sus secciones permitidas
             
             // Bloquear Secciones Operativas
             if ($request->is('secciones/ib*') || 

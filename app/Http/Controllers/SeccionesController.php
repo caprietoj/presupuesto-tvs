@@ -58,8 +58,11 @@ class SeccionesController extends Controller
         }
         
         $secciones = $query->orderBy('seccion')->pluck('seccion');
+        
+        // Determinar si el usuario puede reclasificar (solo acceso total)
+        $canReclassify = !$userPermissions || $userPermissions->access_type === 'total';
 
-        return view('secciones.detallado', compact('secciones'));
+        return view('secciones.detallado', compact('secciones', 'canReclassify'));
     }
 
     public function getMovimientosDetallado(Request $request)
@@ -72,6 +75,13 @@ class SeccionesController extends Controller
 
         // IMPORTANTE: Solo mostrar movimientos de centros de costo configurados
         $centrosCostoConfig = CentroCostoSeccion::query();
+
+        // Filtrar por permisos del usuario
+        $userPermissions = session('user_permissions');
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            $allowedSections = $userPermissions->getAllowedSections();
+            $centrosCostoConfig->whereIn('seccion', $allowedSections);
+        }
 
         if ($seccion) {
             $centrosCostoConfig->where('seccion', 'LIKE', '%' . $seccion . '%');
@@ -99,7 +109,11 @@ class SeccionesController extends Controller
         }
 
         // Consultar movimientos SOLO de centros de costo configurados
-        $query = \App\Models\Movimiento::whereIn('centro_costo', $centrosCostoIds);
+        // Y excluir los que ya están marcados como 2024-2025 (no revertidos)
+        $query = \App\Models\Movimiento::whereIn('centro_costo', $centrosCostoIds)
+            ->whereDoesntHave('exclusion', function($q) {
+                $q->where('revertido', false);
+            });
 
         // Calcular total de registros para paginación
         $totalRegistros = $query->count();
@@ -1129,6 +1143,15 @@ class SeccionesController extends Controller
      */
     public function reclasificarMovimiento(Request $request)
     {
+        // Verificar permisos - solo usuarios con acceso total pueden reclasificar
+        $userPermissions = session('user_permissions');
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos para reclasificar movimientos. Esta acción está reservada para usuarios con acceso total.'
+            ], 403);
+        }
+        
         try {
             $validated = $request->validate([
                 'movimiento_id' => 'required|integer',
@@ -1350,6 +1373,167 @@ class SeccionesController extends Controller
                 'success' => false,
                 'message' => 'Error al obtener detalles: ' . $e->getMessage()
             ], 404);
+        }
+    }
+
+    /**
+     * Excluir un gasto del presupuesto actual (marcarlo como 2024-2025)
+     */
+    public function excluirGasto2024(Request $request)
+    {
+        // Verificar permisos - solo usuarios con acceso total pueden excluir
+        $userPermissions = session('user_permissions');
+        if ($userPermissions && $userPermissions->access_type === 'secciones') {
+            return response()->json([
+                'success' => false,
+                'message' => 'No tiene permisos para excluir movimientos. Esta acción está reservada para usuarios con acceso total.'
+            ], 403);
+        }
+        
+        try {
+            $validated = $request->validate([
+                'movimiento_id' => 'required|integer',
+                'motivo' => 'nullable|string|max:500'
+            ]);
+
+            // Buscar el movimiento
+            $movimiento = Movimiento::find($validated['movimiento_id']);
+            
+            if (!$movimiento) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Movimiento no encontrado'
+                ], 404);
+            }
+
+            // Verificar que el movimiento no esté ya excluido
+            $existeExclusion = \App\Models\ExclusionPresupuesto::where('movimiento_id', $movimiento->id)
+                ->where('revertido', false)
+                ->first();
+
+            if ($existeExclusion) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Este movimiento ya está marcado como gasto 2024-2025'
+                ], 400);
+            }
+
+            // Obtener configuración del centro de costo
+            $configuracion = CentroCostoSeccion::where('centro_costo', $movimiento->centro_costo)->first();
+
+            // Crear registro de exclusión
+            $exclusion = \App\Models\ExclusionPresupuesto::create([
+                'movimiento_id' => $movimiento->id,
+                'usuario' => Auth::user()->name,
+                'seccion' => $configuracion ? $configuracion->seccion : 'Sin configurar',
+                'rubro' => $configuracion ? $configuracion->rubro : 'Sin configurar',
+                'centro_costo' => $movimiento->centro_costo,
+                'descripcion' => $movimiento->descripcion ?? 'Sin descripción',
+                'valor' => $movimiento->valor,
+                'fecha_movimiento' => $movimiento->fecha,
+                'documento' => $movimiento->documento,
+                'motivo' => $validated['motivo'],
+                'revertido' => false
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Gasto marcado exitosamente como 2024-2025. Ya no afectará el presupuesto actual.',
+                'exclusion' => $exclusion
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error al excluir gasto 2024: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al procesar la exclusión: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Ver lista de gastos excluidos 2024-2025
+     */
+    public function gastos20242025(Request $request)
+    {
+        // Obtener filtros
+        $usuario = $request->get('usuario');
+        $seccion = $request->get('seccion');
+        $revertido = $request->get('revertido');
+        $fechaDesde = $request->get('fecha_desde');
+        $fechaHasta = $request->get('fecha_hasta');
+
+        // Query base
+        $query = \App\Models\ExclusionPresupuesto::query();
+
+        // Aplicar filtros
+        if ($usuario) {
+            $query->where('usuario', 'LIKE', '%' . $usuario . '%');
+        }
+
+        if ($seccion) {
+            $query->where('seccion', 'LIKE', '%' . $seccion . '%');
+        }
+
+        if ($revertido !== null) {
+            $query->where('revertido', $revertido);
+        }
+
+        if ($fechaDesde) {
+            $query->whereDate('created_at', '>=', $fechaDesde);
+        }
+
+        if ($fechaHasta) {
+            $query->whereDate('created_at', '<=', $fechaHasta);
+        }
+
+        // Ordenar por más recientes
+        $exclusiones = $query->orderBy('created_at', 'desc')->paginate(20);
+
+        // Obtener listas únicas para filtros
+        $usuarios = \App\Models\ExclusionPresupuesto::select('usuario')
+            ->distinct()
+            ->pluck('usuario');
+
+        $secciones = \App\Models\ExclusionPresupuesto::select('seccion')
+            ->distinct()
+            ->pluck('seccion');
+
+        return view('gastos-2024-2025.index', compact('exclusiones', 'usuarios', 'secciones'));
+    }
+
+    /**
+     * Revertir una exclusión de gasto 2024-2025
+     */
+    public function revertirExclusion($id)
+    {
+        try {
+            $exclusion = \App\Models\ExclusionPresupuesto::findOrFail($id);
+
+            // Verificar que no esté ya revertida
+            if ($exclusion->revertido) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Esta exclusión ya fue revertida anteriormente.'
+                ]);
+            }
+
+            // Marcar como revertida
+            $exclusion->revertir(Auth::user()->name);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Exclusión revertida exitosamente. El gasto volverá a afectar el presupuesto actual.'
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error al revertir exclusión: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al revertir la exclusión: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

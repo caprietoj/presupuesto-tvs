@@ -84,6 +84,11 @@ Route::middleware(['auth', 'check.access'])->group(function () {
     Route::get('/api/secciones/centros-costo-disponibles', [SeccionesController::class, 'getCentrosCostoDisponibles'])->name('api.secciones.centros-disponibles');
     Route::get('/api/secciones/ejecucion-pai', [SeccionesController::class, 'getEjecucionPai']);
     
+    // Rutas para exclusión de gastos 2024-2025
+    Route::post('/api/secciones/excluir-gasto-2024', [SeccionesController::class, 'excluirGasto2024'])->name('api.secciones.excluir-2024');
+    Route::get('/gastos-2024-2025', [SeccionesController::class, 'gastos20242025'])->name('gastos-2024-2025.index');
+    Route::post('/gastos-2024-2025/revertir/{id}', [SeccionesController::class, 'revertirExclusion'])->name('gastos-2024-2025.revertir');
+    
     // Control de Cambios - Auditoría de Reclasificaciones
     Route::get('/control-cambios', [SeccionesController::class, 'controlCambios'])->name('control-cambios.index');
     Route::post('/control-cambios/revertir/{id}', [SeccionesController::class, 'revertirReclasificacion'])->name('control-cambios.revertir');

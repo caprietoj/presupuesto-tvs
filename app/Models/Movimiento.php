@@ -61,4 +61,12 @@ class Movimiento extends Model
         'tasa_cambio_moneda_relacion' => 'decimal:4',
         'valor_moneda_relacion' => 'decimal:2',
     ];
+
+    /**
+     * Relación con exclusiones de presupuesto 2024-2025
+     */
+    public function exclusion()
+    {
+        return $this->hasOne(\App\Models\ExclusionPresupuesto::class, 'movimiento_id');
+    }
 }

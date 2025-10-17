@@ -106,15 +106,13 @@
                     {{ __('Resumen Secciones') }}
                 </a>
 
-                <!-- Detallado Secciones - Solo para acceso total -->
-                @if($hasTotalAccess)
+                <!-- Detallado Secciones - Todos los usuarios -->
                 <a href="{{ route('secciones.detallado') }}" class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.detallado') ? 'bg-[#e8eef5] text-[#2a3d5d] font-semibold' : '' }}">
                     <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     {{ __('Detallado Secciones') }}
                 </a>
-                @endif
 
                 <!-- Secciones Operativas - Solo para acceso total -->
                 @if($hasTotalAccess)
@@ -220,6 +218,12 @@
                             </svg>
                             {{ __('Control de Cambios') }}
                         </a>
+                        <a href="{{ route('gastos-2024-2025.index') }}" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('gastos-2024-2025.*') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            {{ __('Gastos 2024-2025') }}
+                        </a>
                     </div>
                 </div>
                 @endif
@@ -247,12 +251,10 @@
                 {{ __('Resumen Secciones') }}
             </x-responsive-nav-link>
 
-            <!-- Detallado Secciones - Solo para acceso total -->
-            @if($hasTotalAccess)
+            <!-- Detallado Secciones - Todos los usuarios -->
             <x-responsive-nav-link :href="route('secciones.detallado')" :active="request()->routeIs('secciones.detallado')">
                 {{ __('Detallado Secciones') }}
             </x-responsive-nav-link>
-            @endif
 
             <!-- Secciones Operativas Mobile - Solo para acceso total -->
             @if($hasTotalAccess)
@@ -325,6 +327,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('control-cambios.index')" :active="request()->routeIs('control-cambios.*')">
                     {{ __('Control de Cambios') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('gastos-2024-2025.index')" :active="request()->routeIs('gastos-2024-2025.*')">
+                    {{ __('Gastos 2024-2025') }}
                 </x-responsive-nav-link>
             </div>
             @endif

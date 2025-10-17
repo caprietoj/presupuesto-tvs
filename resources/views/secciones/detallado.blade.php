@@ -73,13 +73,15 @@
                                         <th>Nombre Tercero</th>
                                         <th id="col-auxiliar" class="columna-condicional">Auxiliar</th>
                                         <th>Centro Costo</th>
+                                        @if($canReclassify)
                                         <th>Acciones</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody id="detallado-tbody">
                                     <!-- Los datos se cargarán aquí dinámicamente -->
                                     <tr>
-                                        <td colspan="16" class="text-center py-8 text-gray-500">
+                                        <td colspan="{{ $canReclassify ? '16' : '15' }}" class="text-center py-8 text-gray-500">
                                             Cargando datos...
                                         </td>
                                     </tr>
@@ -225,6 +227,69 @@
         </div>
     </div>
 
+    <!-- Modal para Excluir Gasto 2024-2025 -->
+    <div id="excluir-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">📅 Marcar como Gasto 2024-2025</h3>
+                <button class="modal-close" onclick="cerrarModalExcluir()">&times;</button>
+            </div>
+            
+            <form id="form-excluir" onsubmit="confirmarExclusion(event)">
+                <div class="modal-body">
+                    <!-- Información del movimiento -->
+                    <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 0.75rem; margin-bottom: 1rem; border-radius: 6px;">
+                        <h4 style="font-weight: 600; color: #92400e; margin-bottom: 0.5rem; font-size: 0.9rem;">⚠️ Gasto a Excluir</h4>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <p><strong>Centro de Costo:</strong> <span id="excluir-centro"></span></p>
+                            <p><strong>Valor:</strong> <span id="excluir-valor" class="font-bold"></span></p>
+                            <p><strong>Sección:</strong> <span id="excluir-seccion"></span></p>
+                            <p><strong>Rubro:</strong> <span id="excluir-rubro"></span></p>
+                            <p><strong>Fecha:</strong> <span id="excluir-fecha"></span></p>
+                            <p><strong>Documento:</strong> <span id="excluir-documento"></span></p>
+                        </div>
+                        <p class="mt-2 text-xs"><strong>Descripción:</strong> <span id="excluir-descripcion"></span></p>
+                    </div>
+
+                    <!-- Explicación -->
+                    <div style="background-color: #dbeafe; border-left: 4px solid #3b82f6; padding: 0.75rem; margin-bottom: 1rem; border-radius: 6px;">
+                        <h4 style="font-weight: 600; color: #1e40af; margin-bottom: 0.5rem; font-size: 0.9rem;">ℹ️ ¿Qué significa esto?</h4>
+                        <p class="text-xs text-gray-700">
+                            Al marcar este gasto como <strong>2024-2025</strong>, se excluirá de los cálculos del presupuesto actual 
+                            (2025-2026) ya que corresponde al año fiscal anterior. El gasto se moverá a la vista "Gastos 2024-2025" 
+                            donde podrá ser consultado y revertido si es necesario.
+                        </p>
+                    </div>
+
+                    <input type="hidden" id="excluir-movimiento-id">
+                    
+                    <div class="mb-3">
+                        <label for="excluir-motivo" class="block text-sm font-medium text-gray-700 mb-1">
+                            📝 Motivo de la exclusión (opcional)
+                        </label>
+                        <textarea id="excluir-motivo" 
+                                  rows="2"
+                                  class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 text-sm"
+                                  placeholder="Ej: Gasto correspondiente al cierre fiscal 2024-2025..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Botones FUERA del modal-body para que siempre sean visibles -->
+                <div style="padding: 1rem 1.5rem; background-color: #f9fafb; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" 
+                            onclick="cerrarModalExcluir()" 
+                            style="padding: 0.5rem 1rem; background-color: #d1d5db; color: #374151; border: none; border-radius: 0.375rem; font-weight: 500; font-size: 0.875rem; cursor: pointer;">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                            style="padding: 0.5rem 1rem; background-color: #d97706; color: white; border: none; border-radius: 0.375rem; font-weight: 500; font-size: 0.875rem; cursor: pointer;">
+                        📅 Marcar como 2024-2025
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <style>
         /* Estilos específicos para mantener consistencia con otras tablas */
         .data-table {
@@ -366,10 +431,10 @@
         .modal-content {
             background: white;
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.5rem;
             width: 90%;
             max-width: 650px;
-            max-height: 85vh;
+            max-height: 90vh;
             overflow-y: auto;
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -381,13 +446,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
             border-bottom: 2px solid #e5e7eb;
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: bold;
             color: #374151;
             margin: 0;
@@ -410,9 +475,16 @@
         }
 
         .modal-body {
-            max-height: calc(85vh - 140px);
+            max-height: calc(90vh - 120px);
             overflow-y: auto;
             padding-right: 0.5rem;
+        }
+
+        /* Estilos para los botones del modal */
+        .modal-body button[type="submit"],
+        .modal-body button[type="button"] {
+            flex-shrink: 0;
+            min-height: 40px;
         }
 
         /* Estilos para el scrollbar del modal */
@@ -432,6 +504,11 @@
 
         .modal-body::-webkit-scrollbar-thumb:hover {
             background: #555;
+        }
+
+        /* SweetAlert2 por encima de los modales */
+        .swal2-container {
+            z-index: 99999 !important;
         }
 
         /* Estilos para botones de acción */
@@ -457,6 +534,17 @@
             background-color: #2563eb;
             transform: translateY(-1px);
             box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-excluir-2024 {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .btn-excluir-2024:hover {
+            background-color: #d97706;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
         }
 
         .action-cell {
@@ -591,6 +679,9 @@
         let registrosPorPagina = 5;
         let totalRegistros = 0;
         let datosCompletos = [];
+        
+        // Permisos del usuario - solo usuarios con acceso total pueden reclasificar
+        const canReclassify = {{ $canReclassify ? 'true' : 'false' }};
 
         // Cargar datos al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
@@ -714,13 +805,22 @@
                     <td>${registro.nombreTercero || ''}</td>
                     <td class="celda-auxiliar ${tieneAuxiliar ? '' : 'oculta'}">${registro.auxiliar || ''}</td>
                     <td>${registro.centroCosto || ''}</td>
-                    <td class="action-cell">
-                        <button class="btn-action btn-reclasificar" 
-                                onclick="abrirModalReclasificar(${index})"
-                                title="Reclasificar este movimiento">
-                            🔄 Reclasificar
-                        </button>
-                    </td>
+                    ${canReclassify ? `
+                        <td class="action-cell">
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="btn-action btn-reclasificar" 
+                                        onclick="abrirModalReclasificar(${index})"
+                                        title="Reclasificar este movimiento">
+                                    🔄 Reclasificar
+                                </button>
+                                <button class="btn-action btn-excluir-2024" 
+                                        onclick="abrirModalExcluir(${index})"
+                                        title="Marcar como gasto 2024-2025">
+                                    📅 2024-2025
+                                </button>
+                            </div>
+                        </td>
+                    ` : ''}
                 </tr>
             `).join('');
         }
@@ -881,7 +981,7 @@
 
         // Funciones auxiliares
         function obtenerColspanCorreto() {
-            // 15 columnas base - restar las que estén ocultas
+            // Columnas base (sin Acciones)
             let colspan = 15;
             
             if (document.getElementById('col-cliente-proveedor').classList.contains('oculta')) {
@@ -892,6 +992,12 @@
             }
             if (document.getElementById('col-auxiliar').classList.contains('oculta')) {
                 colspan -= 1; // Auxiliar
+            }
+            
+            // Si NO puede reclasificar, ya está correcto (15 - ocultas)
+            // Si puede reclasificar, sumar 1 por la columna Acciones
+            if (canReclassify) {
+                colspan += 1;
             }
             
             return colspan.toString();
@@ -1001,10 +1107,26 @@
 
         // Abrir modal de reclasificación
         function abrirModalReclasificar(index) {
+            // Verificar permisos antes de abrir el modal
+            if (!canReclassify) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Sin permisos',
+                    text: 'No tiene permisos para reclasificar movimientos. Solo usuarios con acceso total pueden realizar esta acción.',
+                    confirmButtonColor: '#3b82f6'
+                });
+                return;
+            }
+            
             movimientoActual = datosCompletos[index];
             
             if (!movimientoActual.id) {
-                alert('Error: No se puede reclasificar este movimiento (ID no disponible)');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se puede reclasificar este movimiento (ID no disponible)',
+                    confirmButtonColor: '#3b82f6'
+                });
                 return;
             }
 
@@ -1174,26 +1296,48 @@
             const nuevoCentroCosto = document.getElementById('reclass-centro-nuevo').value;
             
             if (!nuevoCentroCosto) {
-                alert('Por favor seleccione un centro de costo destino');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Seleccione destino',
+                    text: 'Por favor seleccione un centro de costo destino',
+                    confirmButtonColor: '#3b82f6'
+                });
                 return;
             }
             
-            // Confirmar acción
+            // Confirmar acción con SweetAlert2
             const selectedOption = document.getElementById('reclass-centro-nuevo').options[document.getElementById('reclass-centro-nuevo').selectedIndex];
-            const mensaje = `¿Está seguro de reclasificar este movimiento?\n\n` +
-                          `De: ${movimientoActual.centroCosto} - ${movimientoActual.seccion}\n` +
-                          `A: ${nuevoCentroCosto} - ${selectedOption.dataset.seccion}\n\n` +
-                          `Valor: $${new Intl.NumberFormat('es-CO').format(Math.abs(parseFloat(movimientoActual.valor) || 0))}`;
             
-            if (!confirm(mensaje)) {
+            const result = await Swal.fire({
+                title: '¿Está seguro de reclasificar?',
+                html: `
+                    <div class="text-left">
+                        <p class="mb-2"><strong>De:</strong> ${movimientoActual.centroCosto} - ${movimientoActual.seccion}</p>
+                        <p class="mb-2"><strong>A:</strong> ${nuevoCentroCosto} - ${selectedOption.dataset.seccion}</p>
+                        <p class="mt-4 text-lg"><strong>Valor:</strong> $${new Intl.NumberFormat('es-CO').format(Math.abs(parseFloat(movimientoActual.valor) || 0))}</p>
+                    </div>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, reclasificar',
+                cancelButtonText: 'Cancelar'
+            });
+            
+            if (!result.isConfirmed) {
                 return;
             }
             
             // Mostrar loading
-            const btnSubmit = event.target.querySelector('button[type="submit"]');
-            const textoOriginal = btnSubmit.innerHTML;
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = '<div class="loading"></div> Procesando...';
+            Swal.fire({
+                title: 'Procesando...',
+                text: 'Reclasificando movimiento',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
             
             try {
                 const response = await fetch('/api/secciones/reclasificar-movimiento', {
@@ -1211,22 +1355,38 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    alert('✅ Movimiento reclasificado exitosamente!\n\n' +
-                          `El gasto de $${new Intl.NumberFormat('es-CO').format(Math.abs(data.data.valor))} fue movido de:\n` +
-                          `${data.data.seccion_anterior} (${data.data.rubro_anterior})\n\n` +
-                          `A:\n${data.data.seccion_nueva} (${data.data.rubro_nuevo})`);
+                    await Swal.fire({
+                        icon: 'success',
+                        title: '¡Reclasificado exitosamente!',
+                        html: `
+                            <div class="text-left">
+                                <p class="mb-2">El gasto de <strong>$${new Intl.NumberFormat('es-CO').format(Math.abs(data.data.valor))}</strong> fue movido de:</p>
+                                <p class="mb-2 text-red-600">${data.data.seccion_anterior} (${data.data.rubro_anterior})</p>
+                                <p class="mb-2">A:</p>
+                                <p class="text-green-600">${data.data.seccion_nueva} (${data.data.rubro_nuevo})</p>
+                            </div>
+                        `,
+                        confirmButtonColor: '#3b82f6'
+                    });
                     
                     cerrarModalReclasificar();
                     cargarDatos(); // Recargar datos para reflejar el cambio
                 } else {
-                    alert('❌ Error al reclasificar: ' + data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al reclasificar',
+                        text: data.message,
+                        confirmButtonColor: '#3b82f6'
+                    });
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('❌ Error al procesar la solicitud: ' + error.message);
-            } finally {
-                btnSubmit.disabled = false;
-                btnSubmit.innerHTML = textoOriginal;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al procesar la solicitud: ' + error.message,
+                    confirmButtonColor: '#3b82f6'
+                });
             }
         }
 
@@ -1244,6 +1404,157 @@
                 cerrarModalReclasificar();
             }
         });
+
+        // ========== FUNCIONES PARA EXCLUSIÓN DE GASTOS 2024-2025 ==========
+        
+        // Abrir modal de exclusión
+        function abrirModalExcluir(index) {
+            // Verificar permisos antes de abrir el modal
+            if (!canReclassify) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Sin permisos',
+                    text: 'No tiene permisos para excluir movimientos. Solo usuarios con acceso total pueden realizar esta acción.',
+                    confirmButtonColor: '#3b82f6'
+                });
+                return;
+            }
+            
+            movimientoActual = datosCompletos[index];
+            
+            if (!movimientoActual.id) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se puede excluir este movimiento (ID no disponible)',
+                    confirmButtonColor: '#3b82f6'
+                });
+                return;
+            }
+
+            // Llenar información del movimiento
+            document.getElementById('excluir-movimiento-id').value = movimientoActual.id;
+            document.getElementById('excluir-centro').textContent = movimientoActual.centroCosto || 'N/A';
+            document.getElementById('excluir-seccion').textContent = movimientoActual.seccion || 'N/A';
+            document.getElementById('excluir-rubro').textContent = movimientoActual.rubro || 'N/A';
+            document.getElementById('excluir-descripcion').textContent = movimientoActual.descripcion || 'N/A';
+            document.getElementById('excluir-fecha').textContent = movimientoActual.fecha || 'N/A';
+            document.getElementById('excluir-documento').textContent = movimientoActual.documento || 'N/A';
+            
+            const valor = parseFloat(movimientoActual.valor) || 0;
+            document.getElementById('excluir-valor').textContent = '$' + new Intl.NumberFormat('es-CO').format(Math.abs(valor));
+            
+            // Mostrar modal
+            document.getElementById('excluir-modal').style.display = 'flex';
+        }
+
+        // Cerrar modal de exclusión
+        function cerrarModalExcluir() {
+            document.getElementById('excluir-modal').style.display = 'none';
+            document.getElementById('form-excluir').reset();
+            movimientoActual = null;
+        }
+
+        // Cerrar modal al hacer clic fuera de él
+        document.getElementById('excluir-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                cerrarModalExcluir();
+            }
+        });
+
+        // Confirmar exclusión
+        async function confirmarExclusion(event) {
+            event.preventDefault();
+            
+            const movimientoId = document.getElementById('excluir-movimiento-id').value;
+            const motivo = document.getElementById('excluir-motivo').value;
+            
+            if (!movimientoId) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'ID de movimiento no válido',
+                    confirmButtonColor: '#3b82f6'
+                });
+                return;
+            }
+
+            // Confirmar con SweetAlert2
+            const result = await Swal.fire({
+                title: '¿Marcar como gasto 2024-2025?',
+                html: `
+                    <div class="text-left">
+                        <p class="mb-2"><strong>Sección:</strong> ${movimientoActual.seccion}</p>
+                        <p class="mb-2"><strong>Rubro:</strong> ${movimientoActual.rubro}</p>
+                        <p class="mb-4 text-lg"><strong>Valor:</strong> $${new Intl.NumberFormat('es-CO').format(Math.abs(parseFloat(movimientoActual.valor)))}</p>
+                        <p class="text-sm text-gray-600">Este gasto dejará de afectar el presupuesto actual (2025-2026).</p>
+                    </div>
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d97706',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sí, marcar',
+                cancelButtonText: 'Cancelar'
+            });
+            
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            // Mostrar loading
+            Swal.fire({
+                title: 'Procesando...',
+                text: 'Marcando gasto como 2024-2025',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            try {
+                const response = await fetch('/api/secciones/excluir-gasto-2024', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        movimiento_id: movimientoId,
+                        motivo: motivo
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    await Swal.fire({
+                        icon: 'success',
+                        title: '¡Gasto marcado exitosamente!',
+                        text: data.message,
+                        confirmButtonColor: '#d97706'
+                    });
+                    cerrarModalExcluir();
+                    // Recargar datos para actualizar la vista
+                    cargarDatos();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al excluir',
+                        text: data.message,
+                        confirmButtonColor: '#3b82f6'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al procesar la solicitud: ' + error.message,
+                    confirmButtonColor: '#3b82f6'
+                });
+            }
+        }
 
         // Cargar centros de costo al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
