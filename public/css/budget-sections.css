@@ -14,6 +14,32 @@
     overflow-x: auto;
 }
 
+/* Estilos para tablas lado a lado */
+.flex-tables-container {
+    display: flex !important;
+    gap: 20px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.flex-tables-container > .table-wrapper {
+    overflow-x: auto;
+}
+
+.flex-tables-container > .table-wrapper:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.flex-tables-container > .table-wrapper:last-child {
+    flex: 0 0 350px;
+    width: 350px;
+}
+
+.flex-tables-container .table-wrapper table {
+    width: 100%;
+}
+
 .budget-table {
     width: 100%;
     border-collapse: collapse;
