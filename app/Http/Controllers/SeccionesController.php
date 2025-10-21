@@ -26,7 +26,6 @@ class SeccionesController extends Controller
             'PEP' => 'pep',
             'DEPORTES ACADEMIA' => 'deportes',
             'BIBLIOTECA' => 'biblioteca',
-            'PSICOLOGIA INSTITUCIONAL' => 'psicologia',
             'CAS' => 'cas',
             'CONSEJERIA UNIVERSITARIA' => 'consejeria-universitaria',
             'DEPARTAMENTO DE APOYO' => 'departamento-apoyo',
@@ -889,6 +888,61 @@ class SeccionesController extends Controller
         return view('secciones.mercadeo', compact('datos'));
     }
 
+    public function convivencias()
+    {
+        $datos = $this->procesarSeccionSimplificada('CONVIVENCIAS');
+        return view('secciones.convivencias', compact('datos'));
+    }
+
+    public function extracurriculares()
+    {
+        $datos = $this->procesarSeccionSimplificada('EXTRACURRICULARES');
+        return view('secciones.extracurriculares', compact('datos'));
+    }
+
+    // Fondos
+    public function fondosMunTvs()
+    {
+        $datos = $this->procesarSeccionSimplificada('MUN TVS');
+        return view('secciones.fondos.mun-tvs', compact('datos'));
+    }
+
+    public function fondosConsejoEstudiantil()
+    {
+        $datos = $this->procesarSeccionSimplificada('CONSEJO ESTUDIANTIL');
+        return view('secciones.fondos.consejo-estudiantil', compact('datos'));
+    }
+
+    public function fondosIntercambio()
+    {
+        $datos = $this->procesarSeccionSimplificada('INTERCAMBIO');
+        return view('secciones.fondos.intercambio', compact('datos'));
+    }
+
+    public function fondosDeportes()
+    {
+        $datos = $this->procesarSeccionSimplificada('DEPORTES - FONDOS');
+        return view('secciones.fondos.deportes', compact('datos'));
+    }
+
+    public function fondosMaterialPop()
+    {
+        $datos = $this->procesarSeccionSimplificada('MATERIAL POP');
+        return view('secciones.fondos.material-pop', compact('datos'));
+    }
+
+    public function fondosPromociones()
+    {
+        $datos = $this->procesarSeccionSimplificada('PROMOCIONES');
+        return view('secciones.fondos.promociones', compact('datos'));
+    }
+
+    public function fondosOtros()
+    {
+        $datos = $this->procesarSeccionSimplificada('OTROS - FONDOS');
+        return view('secciones.fondos.otros', compact('datos'));
+    }
+
     /**
      * Obtiene los movimientos detallados de una sección operativa para un mes específico
      */
@@ -1006,6 +1060,43 @@ class SeccionesController extends Controller
             'MERCADEO' => [
                 'centros_costo' => ['110114'],
                 'presupuesto_aprobado' => 78688901
+            ],
+            'CONVIVENCIAS' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
+            ],
+            'EXTRACURRICULARES' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
+            ],
+            // Fondos
+            'MUN TVS' => [
+                'centros_costo' => ['131401', '131501'], // Incluye MUN TVS y MUN OTROS COLEGIOS
+                'presupuesto_aprobado' => 0
+            ],
+            'CONSEJO ESTUDIANTIL' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
+            ],
+            'INTERCAMBIO' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
+            ],
+            'DEPORTES - FONDOS' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
+            ],
+            'MATERIAL POP' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
+            ],
+            'PROMOCIONES' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
+            ],
+            'OTROS - FONDOS' => [
+                'centros_costo' => [],
+                'presupuesto_aprobado' => 0
             ],
         ];
     }

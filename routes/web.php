@@ -62,6 +62,18 @@ Route::middleware(['auth', 'check.access'])->group(function () {
     Route::get('/secciones/reparaciones-mayores', [SeccionesController::class, 'reparacionesMayores'])->name('secciones.reparaciones-mayores');
     Route::get('/secciones/reparacion-muebles', [SeccionesController::class, 'reparacionMuebles'])->name('secciones.reparacion-muebles');
     Route::get('/secciones/mercadeo', [SeccionesController::class, 'mercadeo'])->name('secciones.mercadeo');
+    Route::get('/secciones/convivencias', [SeccionesController::class, 'convivencias'])->name('secciones.convivencias');
+    Route::get('/secciones/extracurriculares', [SeccionesController::class, 'extracurriculares'])->name('secciones.extracurriculares');
+    
+    // Fondos
+    Route::get('/secciones/fondos/mun-tvs', [SeccionesController::class, 'fondosMunTvs'])->name('secciones.fondos.mun-tvs');
+    Route::get('/secciones/fondos/consejo-estudiantil', [SeccionesController::class, 'fondosConsejoEstudiantil'])->name('secciones.fondos.consejo-estudiantil');
+    Route::get('/secciones/fondos/intercambio', [SeccionesController::class, 'fondosIntercambio'])->name('secciones.fondos.intercambio');
+    Route::get('/secciones/fondos/deportes', [SeccionesController::class, 'fondosDeportes'])->name('secciones.fondos.deportes');
+    Route::get('/secciones/fondos/material-pop', [SeccionesController::class, 'fondosMaterialPop'])->name('secciones.fondos.material-pop');
+    Route::get('/secciones/fondos/promociones', [SeccionesController::class, 'fondosPromociones'])->name('secciones.fondos.promociones');
+    Route::get('/secciones/fondos/otros', [SeccionesController::class, 'fondosOtros'])->name('secciones.fondos.otros');
+    
     Route::get('/api/secciones/movimientos', [SeccionesController::class, 'getMovimientosDetallado'])->name('api.secciones.movimientos');
     Route::get('/api/secciones/movimientos-operativas', [SeccionesController::class, 'getMovimientosSeccionOperativa'])->name('api.secciones.movimientos-operativas');
     Route::get('/secciones/movimientos-detallado', [SeccionesController::class, 'getMovimientosDetallado'])->name('secciones.movimientos-detallado');

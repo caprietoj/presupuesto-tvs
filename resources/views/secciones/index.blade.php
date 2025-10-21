@@ -76,11 +76,6 @@
                                         <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
-                                        <td>Apoyo Institucional</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Apoyo Institucional" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
                                         <td>Eventos Académicos y Sociales</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Eventos Académicos y Sociales" data-type="ejecucion">0</td>
                                         <td class="number-cell calculated">-</td>
@@ -88,16 +83,6 @@
                                     <tr>
                                         <td>Insumos Tecnológicos</td>
                                         <td class="number-cell editable" data-section="preescolar" data-concept="Insumos Tecnológicos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Salidas Académicas Sección</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Salidas Académicas Sección" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alimentación</td>
-                                        <td class="number-cell editable" data-section="preescolar" data-concept="Alimentación" data-type="ejecucion">0</td>
                                         <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
@@ -164,21 +149,6 @@
                                         <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
-                                        <td>Proyecto Comunitario</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Proyecto Comunitario" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>MUN TVS - Otros Colegios - GLY</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="MUN TVS - Otros Colegios - GLY" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Apoyo Institucional</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Apoyo Institucional" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
                                         <td>Eventos Académicos y Sociales</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Eventos Académicos y Sociales" data-type="ejecucion">0</td>
                                         <td class="number-cell calculated">-</td>
@@ -186,16 +156,6 @@
                                     <tr>
                                         <td>Insumos Tecnológicos</td>
                                         <td class="number-cell editable" data-section="escuela-media" data-concept="Insumos Tecnológicos" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Salidas Académicas Sección</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Salidas Académicas Sección" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alimentación</td>
-                                        <td class="number-cell editable" data-section="escuela-media" data-concept="Alimentación" data-type="ejecucion">0</td>
                                         <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
@@ -267,11 +227,6 @@
                                         <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
-                                        <td>MUN TVS - Otros Colegios - GLY</td>
-                                        <td class="number-cell editable" data-section="escuela-alta" data-concept="MUN TVS - Otros Colegios - GLY" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
                                         <td>Preparación Pruebas Saber</td>
                                         <td class="number-cell editable" data-section="escuela-alta" data-concept="Preparación Pruebas Saber" data-type="ejecucion">0</td>
                                         <td class="number-cell calculated">-</td>
@@ -327,11 +282,6 @@
                                     <tr>
                                         <td>Material Importado</td>
                                         <td class="number-cell editable" data-section="pai" data-concept="Material Importado" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Proyecto Comunitario</td>
-                                        <td class="number-cell editable" data-section="pai" data-concept="Proyecto Comunitario" data-type="ejecucion">0</td>
                                         <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>
@@ -418,11 +368,6 @@
                                     <tr>
                                         <td>Transporte</td>
                                         <td class="number-cell editable" data-section="deportes" data-concept="Transporte" data-type="ejecucion">0</td>
-                                        <td class="number-cell calculated">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Alimentación</td>
-                                        <td class="number-cell editable" data-section="deportes" data-concept="Alimentación" data-type="ejecucion">0</td>
                                         <td class="number-cell calculated">-</td>
                                     </tr>
                                     <tr>

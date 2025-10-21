@@ -174,6 +174,45 @@
                         <a href="{{ route('secciones.honorarios') }}" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.honorarios') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
                             {{ __('Honorarios') }}
                         </a>
+                        <a href="{{ route('secciones.convivencias') }}" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.convivencias') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                            {{ __('Convivencias') }}
+                        </a>
+                        <a href="{{ route('secciones.extracurriculares') }}" class="block px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.extracurriculares') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                            {{ __('Extracurriculares') }}
+                        </a>
+                        
+                        <!-- Fondos Submenu -->
+                        <div x-data="{ fondosOpen: false }" class="mt-2">
+                            <button @click="fondosOpen = ! fondosOpen" class="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-600 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition">
+                                <span>{{ __('Fondos') }}</span>
+                                <svg class="h-3 w-3 transition-transform" :class="{'rotate-180': fondosOpen}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div x-show="fondosOpen" x-collapse class="ml-6 mt-1 space-y-1">
+                                <a href="{{ route('secciones.fondos.mun-tvs') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.fondos.mun-tvs') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                                    {{ __('MUN TVS') }}
+                                </a>
+                                <a href="{{ route('secciones.fondos.consejo-estudiantil') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.fondos.consejo-estudiantil') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                                    {{ __('CONSEJO ESTUDIANTIL') }}
+                                </a>
+                                <a href="{{ route('secciones.fondos.intercambio') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.fondos.intercambio') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                                    {{ __('INTERCAMBIO') }}
+                                </a>
+                                <a href="{{ route('secciones.fondos.deportes') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.fondos.deportes') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                                    {{ __('DEPORTES') }}
+                                </a>
+                                <a href="{{ route('secciones.fondos.material-pop') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.fondos.material-pop') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                                    {{ __('MATERIAL POP') }}
+                                </a>
+                                <a href="{{ route('secciones.fondos.promociones') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.fondos.promociones') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                                    {{ __('PROMOCIONES') }}
+                                </a>
+                                <a href="{{ route('secciones.fondos.otros') }}" class="block px-4 py-2 text-xs text-gray-500 hover:bg-[#e8eef5] hover:text-[#2a3d5d] rounded-md transition {{ request()->routeIs('secciones.fondos.otros') ? 'bg-[#e8eef5] text-[#2a3d5d] font-medium' : '' }}">
+                                    {{ __('OTROS') }}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endif
@@ -307,6 +346,45 @@
                 <x-responsive-nav-link :href="route('secciones.honorarios')" :active="request()->routeIs('secciones.honorarios')">
                     {{ __('Honorarios') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('secciones.convivencias')" :active="request()->routeIs('secciones.convivencias')">
+                    {{ __('Convivencias') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('secciones.extracurriculares')" :active="request()->routeIs('secciones.extracurriculares')">
+                    {{ __('Extracurriculares') }}
+                </x-responsive-nav-link>
+                
+                <!-- Fondos Mobile -->
+                <div x-data="{ fondosOpenMobile: false }" class="mt-2">
+                    <button @click="fondosOpenMobile = ! fondosOpenMobile" class="flex items-center justify-between w-full px-4 py-2 text-left text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition">
+                        <span>{{ __('Fondos') }}</span>
+                        <svg class="h-3 w-3 transition-transform" :class="{'rotate-180': fondosOpenMobile}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="fondosOpenMobile" x-collapse class="ml-4 mt-1 space-y-1">
+                        <x-responsive-nav-link :href="route('secciones.fondos.mun-tvs')" :active="request()->routeIs('secciones.fondos.mun-tvs')">
+                            {{ __('MUN TVS') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('secciones.fondos.consejo-estudiantil')" :active="request()->routeIs('secciones.fondos.consejo-estudiantil')">
+                            {{ __('CONSEJO ESTUDIANTIL') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('secciones.fondos.intercambio')" :active="request()->routeIs('secciones.fondos.intercambio')">
+                            {{ __('INTERCAMBIO') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('secciones.fondos.deportes')" :active="request()->routeIs('secciones.fondos.deportes')">
+                            {{ __('DEPORTES') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('secciones.fondos.material-pop')" :active="request()->routeIs('secciones.fondos.material-pop')">
+                            {{ __('MATERIAL POP') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('secciones.fondos.promociones')" :active="request()->routeIs('secciones.fondos.promociones')">
+                            {{ __('PROMOCIONES') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('secciones.fondos.otros')" :active="request()->routeIs('secciones.fondos.otros')">
+                            {{ __('OTROS') }}
+                        </x-responsive-nav-link>
+                    </div>
+                </div>
             </div>
             @endif
             
